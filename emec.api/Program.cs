@@ -1,3 +1,5 @@
+using emec.api;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +8,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCustomServices(builder.Configuration); // Register your custom services
 
 var app = builder.Build();
 
@@ -18,6 +21,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication(); // Must be before UseAuthorization
 app.UseAuthorization();
 
 app.MapControllers();

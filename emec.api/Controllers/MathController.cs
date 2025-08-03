@@ -6,7 +6,7 @@ namespace emec.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Apply token authentication at the controller level  
+    [Authorize]   
     public class MathController : ControllerBase
     {
         [HttpPost("add")]
