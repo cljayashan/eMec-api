@@ -58,6 +58,10 @@ public partial class EMecContext : DbContext
             entity.Property(e => e.PasswordHash)
                 .IsRequired()
                 .HasMaxLength(256);
+            entity.Property(e => e.Salt)
+                .IsRequired()
+                .HasMaxLength(16)
+                .IsFixedLength();
             entity.Property(e => e.UserName)
                 .IsRequired()
                 .HasMaxLength(100);

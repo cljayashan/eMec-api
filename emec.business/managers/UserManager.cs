@@ -26,17 +26,17 @@ namespace emec.business.managers
 
         public UserManager(
             IUserRepository userRepository,
-             IMapper<ResponseMessage, ResponseBase> serviceResponseErrorMapper,
+            IMapper<ResponseMessage, ResponseBase> serviceResponseErrorMapper,
             IValidator<LoginDataRequest> userDataRequestValidator,
             IMapper<Object, ResponseBase> serviceResponseMapper,
             IConfiguration configuration
             )
         {
-            _userRepository = userRepository;
+            _userRepository = userRepository ?? throw new System.ArgumentNullException(nameof(userRepository));
             _serviceResponseMapper = serviceResponseMapper ?? throw new System.ArgumentNullException(nameof(serviceResponseMapper));
             _userDataRequestValidator = userDataRequestValidator ?? throw new System.ArgumentNullException(nameof(userDataRequestValidator));
             _serviceResponseErrorMapper = serviceResponseErrorMapper ?? throw new System.ArgumentNullException(nameof(serviceResponseErrorMapper));
-            _configuration = configuration;
+            _configuration = configuration ?? throw new System.ArgumentNullException(nameof(configuration));
         }
 
         public async Task<IList<string>> GetUserRolesAsync(string userName)
@@ -64,7 +64,7 @@ namespace emec.business.managers
                 var token = GenerateJwtToken(loginDataRequest.Attributes.UserName, roles);
                 var loginRes = new LoginDataResponse
                 {
-                     Token = token
+                    Token = token
                 };
                 return _serviceResponseMapper.Map(loginRes);
             }
@@ -72,7 +72,8 @@ namespace emec.business.managers
 
         private string GenerateJwtToken(string username, IList<string> roles)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key configuration is missing.");
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
