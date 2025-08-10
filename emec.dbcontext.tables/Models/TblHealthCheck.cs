@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace emec.dbcontext.tables.Models;
 
-public partial class Role
+public partial class TblHealthCheck
 {
-    public int RoleId { get; set; }
+    public int Id { get; set; }
 
-    public string RoleName { get; set; }
+    public string Status { get; set; }
 }

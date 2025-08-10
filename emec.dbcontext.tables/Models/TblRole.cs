@@ -5,11 +5,9 @@ using System.Collections.Generic;
 
 namespace emec.dbcontext.tables.Models;
 
-public partial class UserRole
+public partial class TblRole
 {
-    public int Id { get; set; }
-
-    public int UserId { get; set; }
-
     public int RoleId { get; set; }
+
+    public string RoleName { get; set; }
 }

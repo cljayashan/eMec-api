@@ -16,19 +16,19 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "[dbo].[HealthCheck]",
+         "Name": "[dbo].[TBL_HealthCheck]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Roles]",
+         "Name": "[dbo].[TBL_Roles]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[UserRoles]",
+         "Name": "[dbo].[TBL_UserRoles]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Users]",
+         "Name": "[dbo].[TBL_Users]",
          "ObjectType": 0
       }
    ],

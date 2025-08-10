@@ -5,9 +5,11 @@ using System.Collections.Generic;
 
 namespace emec.dbcontext.tables.Models;
 
-public partial class HealthCheck
+public partial class TblUser
 {
-    public int Id { get; set; }
+    public int UserId { get; set; }
 
-    public string Status { get; set; }
+    public string UserName { get; set; }
+
+    public string PasswordHash { get; set; }
 }

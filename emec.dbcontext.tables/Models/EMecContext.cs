@@ -13,28 +13,32 @@ public partial class EMecContext : DbContext
     {
     }
 
-    public virtual DbSet<HealthCheck> HealthChecks { get; set; }
+    public virtual DbSet<TblHealthCheck> TblHealthChecks { get; set; }
 
-    public virtual DbSet<Role> Roles { get; set; }
+    public virtual DbSet<TblRole> TblRoles { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<TblUser> TblUsers { get; set; }
 
-    public virtual DbSet<UserRole> UserRoles { get; set; }
+    public virtual DbSet<TblUserRole> TblUserRoles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<HealthCheck>(entity =>
+        modelBuilder.Entity<TblHealthCheck>(entity =>
         {
-            entity.ToTable("HealthCheck");
+            entity.HasKey(e => e.Id).HasName("PK_HealthCheck");
+
+            entity.ToTable("TBL_HealthCheck");
 
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<Role>(entity =>
+        modelBuilder.Entity<TblRole>(entity =>
         {
             entity.HasKey(e => e.RoleId).HasName("PK__Roles__8AFACE1A6B41E23D");
+
+            entity.ToTable("TBL_Roles");
 
             entity.HasIndex(e => e.RoleName, "UQ__Roles__8A2B6160797B8678").IsUnique();
 
@@ -43,9 +47,11 @@ public partial class EMecContext : DbContext
                 .HasMaxLength(50);
         });
 
-        modelBuilder.Entity<User>(entity =>
+        modelBuilder.Entity<TblUser>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4C18823AC2");
+
+            entity.ToTable("TBL_Users");
 
             entity.HasIndex(e => e.UserName, "UQ__Users__C9F284568372B8A2").IsUnique();
 
@@ -57,8 +63,12 @@ public partial class EMecContext : DbContext
                 .HasMaxLength(100);
         });
 
-        modelBuilder.Entity<UserRole>(entity =>
+        modelBuilder.Entity<TblUserRole>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK_UserRoles");
+
+            entity.ToTable("TBL_UserRoles");
+
             entity.Property(e => e.Id).ValueGeneratedNever();
         });
 

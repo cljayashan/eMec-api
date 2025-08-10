@@ -22,7 +22,7 @@ namespace emec.data.repositories
         public Task<IEnumerable<HealthCheckDataResponse>> GetHealthCheckDataAsync(HealthCheckDataRequest healthCheckDataRequest)
         {
 
-            var health = from hc in _emecContext.HealthChecks
+            var health = from hc in _emecContext.TblHealthChecks
                          where hc.Id == 1
                          select new HealthCheckDataResponse
                          {

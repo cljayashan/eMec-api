@@ -4,7 +4,6 @@ using emec.contracts.managers;
 using emec.contracts.repositories;
 using emec.data.repositories;
 using emec.dbcontext.tables.Models;
-using emec.entities.Configurations;
 using emec.entities.HealthCheck;
 using emec.shared.Contracts;
 using emec.shared.Mappers;
