@@ -22,8 +22,8 @@ using emec.contracts.repositories;
 using emec.shared.models;
 using emec.entities.HealthCheck;
 using emec.contracts.managers;
-//using emec.contracts.repositories;
-
+using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 
 namespace emec.business.managers
 {
@@ -37,8 +37,6 @@ namespace emec.business.managers
 
         private readonly IMapper<ResponseMessage, ResponseBase> _serviceResponseErrorMapper;
 
-
-
         public HealthCheckManager(
             IHealthCheckRepository healthcheckRepository,
             IMapper<ResponseMessage, ResponseBase> serviceResponseErrorMapper,
@@ -46,14 +44,10 @@ namespace emec.business.managers
             IMapper<Object, ResponseBase> serviceResponseMapper
             )
         {
-            //_healthcheckRepository = healthcheckRepository ?? throw new ArgumentNullException(nameof(healthcheckRepository));
-            //_healthcheckRepository = healthcheckRepository;
             _healthcheckRepository = healthcheckRepository ?? throw new ArgumentNullException(nameof(healthcheckRepository));
-            //_serviceResponseMapper = serviceResponseMapper;
             _serviceResponseMapper = serviceResponseMapper ?? throw new ArgumentNullException(nameof(serviceResponseMapper));
             _healthCheckDataRequestValidator = healthCheckDataRequestValidator ?? throw new ArgumentNullException(nameof(healthCheckDataRequestValidator));
             _serviceResponseErrorMapper = serviceResponseErrorMapper ?? throw new ArgumentNullException(nameof(serviceResponseErrorMapper));
-
         }
 
         public async Task<ResponseBase> GetHealth(HealthCheckDataRequest healthCheckDataRequest)
@@ -65,7 +59,7 @@ namespace emec.business.managers
             else
             {
                 var locations = await _healthcheckRepository.GetHealthCheckDataAsync(healthCheckDataRequest);
-                return _serviceResponseMapper.Map(locations);                
+                return _serviceResponseMapper.Map(locations);
             }
         }
     }

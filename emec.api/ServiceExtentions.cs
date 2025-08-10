@@ -12,6 +12,7 @@ using emec.shared.models;
 using Microsoft.IdentityModel.Tokens;
 using emec.business.validators.HealthCheck;
 using emec.shared.Errors;
+using Microsoft.EntityFrameworkCore;
 
 namespace emec.api
 {
@@ -47,10 +48,10 @@ namespace emec.api
 
 
             //DbContext configuration
-            services.AddDbContext<EMecContext>();
+            services.AddDbContext<EMecContext>(options => options.UseSqlServer(configuration["AppConfiguration:ConnectionString"]));
 
             //Configurations
-            services.Configure<AppConfiguration>(configuration.GetSection("AppConfiguration"));
+            //services.Configure<AppConfiguration>(configuration.GetSection("AppConfiguration"));
 
             //Managers
             services.AddScoped<IHealthCheckManager, HealthCheckManager>();

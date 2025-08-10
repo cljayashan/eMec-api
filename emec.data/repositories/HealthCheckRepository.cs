@@ -21,24 +21,15 @@ namespace emec.data.repositories
 
         public Task<IEnumerable<HealthCheckDataResponse>> GetHealthCheckDataAsync(HealthCheckDataRequest healthCheckDataRequest)
         {
-            var health = new List<HealthCheckDataResponse>
-            {
-                new HealthCheckDataResponse
-                {
-                    Status = "Healthy",
-                    Message = "All systems operational",
-                    Timestamp = DateTime.UtcNow
-                }
-            };
 
-            //var health = from hc in _emecContext.HealthChecks
-            //             where hc.Id == 1
-            //             select new HealthCheckDataResponse
-            //             {
-            //                 Status = hc.Status,
-            //                 Message = "Aadasdada",
-            //                 Timestamp = DateTime.Now
-            //             };
+            var health = from hc in _emecContext.HealthChecks
+                         where hc.Id == 1
+                         select new HealthCheckDataResponse
+                         {
+                             Status = hc.Status,
+                             Message = "Db connection ok",
+                             Timestamp = DateTime.Now
+                         };
 
             return Task.FromResult<IEnumerable<HealthCheckDataResponse>>(health);
         }
