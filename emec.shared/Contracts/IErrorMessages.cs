@@ -9,6 +9,10 @@ namespace emec.shared.Contracts
 {
     public interface IErrorMessages
     {
-        ResponseMessage Common_InvalidRequest();
+        //1
+        ResponseMessage Common_InvalidRequest(); 
+
+        //2
+        ResponseMessage Common_ApiActionNotPermitted();
     }
 }

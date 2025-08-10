@@ -120,4 +120,7 @@
   <data name="E0001" xml:space="preserve">
     <value>Invalid Request</value>
   </data>
+  <data name="E0002" xml:space="preserve">
+    <value>Api action not permitted</value>
+  </data>
 </root>

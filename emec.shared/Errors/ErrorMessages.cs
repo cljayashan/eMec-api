@@ -11,15 +11,18 @@ namespace emec.shared.Errors
 {
     public class ErrorMessages : IErrorMessages
     {
-        public ResponseMessage Common_InvalidRequest()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ResponseMessage GetMessageServerError() => new ResponseMessage
+        
+        public ResponseMessage Common_InvalidRequest() => new ResponseMessage
         {
             Code = "E0001",
             Message = Errors.E0001
         };
+
+        public ResponseMessage Common_ApiActionNotPermitted() => new ResponseMessage
+        {
+            Code = "E0002",
+            Message = Errors.E0002
+        };
+
     }
 }

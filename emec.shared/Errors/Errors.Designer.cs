@@ -68,5 +68,14 @@ namespace emec.shared.Errors {
                 return ResourceManager.GetString("E0001", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Api action not permitted.
+        /// </summary>
+        internal static string E0002 {
+            get {
+                return ResourceManager.GetString("E0002", resourceCulture);
+            }
+        }
     }
 }

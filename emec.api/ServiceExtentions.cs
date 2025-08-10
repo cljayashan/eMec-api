@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using emec.business.validators.HealthCheck;
 using emec.shared.Errors;
 using Microsoft.EntityFrameworkCore;
+using emec.entities.Login;
+using emec.business.validators.Login;
 
 namespace emec.api
 {
@@ -54,9 +56,11 @@ namespace emec.api
 
             //Managers
             services.AddScoped<IHealthCheckManager, HealthCheckManager>();
+            services.AddScoped<IUserManager, UserManager>();
 
             //Validators
             services.AddScoped<IValidator<HealthCheckDataRequest>, HealthCheckRequestValidator>();
+            services.AddScoped<IValidator<LoginDataRequest>, LoginRequestValidator>();
 
             //Mappers
             services.AddSingleton<IMapper<ResponseMessage, ResponseBase>, ServiceErrorMapper>();
@@ -64,6 +68,7 @@ namespace emec.api
 
             //Repositories
             services.AddScoped<IHealthCheckRepository, HealthCheckRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             //resource
             services.AddScoped<IErrorMessages, ErrorMessages>();

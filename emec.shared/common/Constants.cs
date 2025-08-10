@@ -10,6 +10,7 @@ namespace emec.shared.common
     {
         public static class ApiActions
         {
+            public const string Authenticate = "authenticate";
             public const string List = "list";
             public const string Add = "add";
             public const string Edit = "edit";

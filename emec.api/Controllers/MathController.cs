@@ -18,12 +18,14 @@ namespace emec.api.Controllers
         }
 
         [HttpPost("User")]
+        [Authorize(Roles = "Admin,User")]
         public IActionResult User([FromBody] string name)
         {
             return Ok("Hello User : " + name);
         }
 
         [HttpPost("Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Admin([FromBody] string name)
         {
             return Ok("Hello Admin : " + name);
