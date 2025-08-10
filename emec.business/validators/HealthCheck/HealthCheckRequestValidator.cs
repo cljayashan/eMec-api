@@ -15,8 +15,10 @@ namespace emec.business.validators.HealthCheck
 
         private readonly IErrorMessages _errorMessages;
 
-        //private readonly ISiteRepository _siteRepository;
-
+        public HealthCheckRequestValidator(IErrorMessages errorMessages)
+        {
+            _errorMessages = errorMessages ?? throw new ArgumentNullException(nameof(errorMessages));
+        }
 
         public void Dispose()
         {

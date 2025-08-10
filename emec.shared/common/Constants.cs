@@ -15,16 +15,6 @@ namespace emec.shared.common
             public const string Edit = "edit";
             public const string View = "view";
             public const string Delete = "delete";
-        }
-
-        public static class ConfigurationService
-        {
-            public static string EmecConnectionString { get; set; }
-        }
-
-        public static class AppConfigurationKeys
-        {
-            public static string InventoryConnectionString = "InventoryDbConnection";
-        }
+        }       
     }
 }
