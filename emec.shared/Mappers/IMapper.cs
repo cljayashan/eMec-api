@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace emec.shared.models
+namespace emec.shared.Mappers
 {
-    public class RequestBase
+    public interface IMapper<in TInput, out TOutput>
     {
-        //public string UserAgent { get; set; }
+        TOutput Map(TInput input);
     }
 }

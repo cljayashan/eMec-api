@@ -15,6 +15,7 @@
     <ProjectReference Include="..\emec.business\emec.business.csproj" />
     <ProjectReference Include="..\emec.contracts\emec.contracts.csproj" />
     <ProjectReference Include="..\emec.data\emec.data.csproj" />
+    <ProjectReference Include="..\emec.dbcontext.tables\emec.dbcontext.tables.csproj" />
     <ProjectReference Include="..\emec.entities\emec.entities.csproj" />
     <ProjectReference Include="..\emec.shared\emec.shared.csproj" />
   </ItemGroup>

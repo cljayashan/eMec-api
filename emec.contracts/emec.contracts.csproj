@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="handlers\" />
-    <Folder Include="managers\" />
     <Folder Include="mappers\" />
-    <Folder Include="repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\emec.entities\emec.entities.csproj" />
+    <ProjectReference Include="..\emec.shared\emec.shared.csproj" />
   </ItemGroup>
 
 </Project>

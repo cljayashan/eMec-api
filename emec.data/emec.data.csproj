@@ -8,7 +8,11 @@
 
   <ItemGroup>
     <Folder Include="mappers\" />
-    <Folder Include="repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\emec.contracts\emec.contracts.csproj" />
+    <ProjectReference Include="..\emec.dbcontext.tables\emec.dbcontext.tables.csproj" />
   </ItemGroup>
 
 </Project>

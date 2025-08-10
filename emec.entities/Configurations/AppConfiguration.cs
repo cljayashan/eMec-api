@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace emec.shared.models
+namespace emec.entities.Configurations
 {
-    public class RequestBase
+    public class AppConfiguration
     {
-        //public string UserAgent { get; set; }
+        public string ConnectionString { get; set; }
     }
 }

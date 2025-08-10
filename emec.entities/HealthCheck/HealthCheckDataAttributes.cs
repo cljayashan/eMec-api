@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace emec.shared.models
+namespace emec.entities.HealthCheck
 {
-    public class RequestBase
+    public class HealthCheckDataAttributes
     {
-        //public string UserAgent { get; set; }
+        public string TestAttribute { get; set; }
     }
 }

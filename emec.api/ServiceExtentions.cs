@@ -1,5 +1,17 @@
 ﻿using System.Text;
+using emec.business.managers;
+using emec.contracts.managers;
+using emec.contracts.repositories;
+using emec.data.repositories;
+using emec.dbcontext.tables.Models;
+using emec.entities.Configurations;
+using emec.entities.HealthCheck;
+using emec.shared.Contracts;
+using emec.shared.Mappers;
+using emec.shared.models;
 using Microsoft.IdentityModel.Tokens;
+using emec.business.validators.HealthCheck;
+using emec.shared.Errors;
 
 namespace emec.api
 {
@@ -29,9 +41,35 @@ namespace emec.api
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
 
-                    ClockSkew = TimeSpan.Zero
+                    ClockSkew = TimeSpan.Zero //normally jqwt tokens have a 5 minute clock skww but we set it to zero
                 };
             });
+
+
+            //DbContext configuration
+            services.AddDbContext<EMecContext>();
+
+            //Configurations
+            services.Configure<AppConfiguration>(configuration.GetSection("AppConfiguration"));
+
+            //Managers
+            services.AddScoped<IHealthCheckManager, HealthCheckManager>();
+
+            //Validators
+            services.AddScoped<IValidator<HealthCheckDataRequest>, HealthCheckRequestValidator>();
+
+            //Mappers
+            services.AddSingleton<IMapper<ResponseMessage, ResponseBase>, ServiceErrorMapper>();
+            services.AddSingleton<IMapper<object, ResponseBase>, ServiceResponseMapper>();
+
+            //Repositories
+            services.AddScoped<IHealthCheckRepository, HealthCheckRepository>();
+
+            //resource
+            services.AddScoped<IErrorMessages, ErrorMessages>();
+
+            //Handlers
+
 
             return services;
         }
