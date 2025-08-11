@@ -77,5 +77,14 @@ namespace emec.shared.Errors {
                 return ResourceManager.GetString("E0002", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid or expired refresh token..
+        /// </summary>
+        internal static string E0003 {
+            get {
+                return ResourceManager.GetString("E0003", resourceCulture);
+            }
+        }
     }
 }

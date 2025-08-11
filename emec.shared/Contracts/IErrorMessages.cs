@@ -14,5 +14,7 @@ namespace emec.shared.Contracts
 
         //2
         ResponseMessage Common_ApiActionNotPermitted();
+
+        ResponseMessage Common_InvalidOrExpiredRefreshToken();
     }
 }

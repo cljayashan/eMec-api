@@ -15,16 +15,19 @@ namespace emec.api.Controllers
         private readonly IUserManager _userManager;
         private readonly IMapper<ResponseMessage, ResponseBase> _serviceResponseErrorMapper;
         private readonly IErrorMessages _errormessages;
+        private readonly IMapper<Object, ResponseBase> _serviceResponseMapper;
 
         public AuthController(
             IUserManager userManager,
             IMapper<ResponseMessage, ResponseBase> serviceResponseErrorMapper,
-            IErrorMessages errorMessages
+            IErrorMessages errorMessages,
+            IMapper<Object, ResponseBase> serviceResponseMapper
             )
         {
             _userManager = userManager;
             _errormessages = errorMessages;
             _serviceResponseErrorMapper = serviceResponseErrorMapper;
+            _serviceResponseMapper = serviceResponseMapper ?? throw new ArgumentNullException(nameof(_serviceResponseMapper));
         }
 
         [HttpPost("auth")]
@@ -38,27 +41,32 @@ namespace emec.api.Controllers
             {
                 return _serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted());
             }
-        }    
+        }
 
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> Refresh([FromBody] TokenRefreshRequest request)
+        public async Task<ActionResult<ResponseBase>> Refresh([FromBody] TokenRefreshRequest request)
         {
             if (request.Action == Constants.ApiActions.Authenticate)
             {
                 var result = await _userManager.RefreshToken(request.Attributes.UserName, request.Attributes.RefreshToken);
                 if (!result.IsSuccess)
                 {
-                    return Unauthorized(result.Error);
-                }                    
-                return Ok(result.Result);
+                    //return Unauthorized(result.Error);
+                    return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidOrExpiredRefreshToken());
+                }
+                else
+                {
+                    //return Ok(result.Result);
+                    return _serviceResponseMapper.Map(result.Result);
+                }
             }
             else
             {
                 return BadRequest(_serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted()));
 
             }
-               
+
         }
     }
-   
+
 }

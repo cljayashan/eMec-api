@@ -24,5 +24,10 @@ namespace emec.shared.Errors
             Message = Errors.E0002
         };
 
+        public ResponseMessage Common_InvalidOrExpiredRefreshToken() => new ResponseMessage
+        {
+            Code = "E0003",
+            Message = Errors.E0003
+        };
     }
 }

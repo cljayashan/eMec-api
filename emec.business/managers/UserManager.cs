@@ -45,31 +45,16 @@ namespace emec.business.managers
             return await _userRepository.GetUserRolesAsync(userName);
         }
 
-        public async Task<ResponseBase> Authenticate(LoginDataRequest loginDataRequest)
+        private int GetAccessTokenValidity()
         {
-            var res = await _userRepository.ValidateUserAsync(loginDataRequest.Attributes.UserName, loginDataRequest.Attributes.Password);
-            if (!res)
-            {
-                var loginRes = new ResponseMessage
-                {
-                    Message = "Invalid username or password."
-                };
-                return _serviceResponseErrorMapper.Map(loginRes);
-            }
-            else
-            {
-                var roles = await _userRepository.GetUserRolesAsync(loginDataRequest.Attributes.UserName);
-                var token = GenerateJwtToken(loginDataRequest.Attributes.UserName, roles);
-                var refreshToken = GenerateRefreshToken();
-                await _userRepository.StoreRefreshTokenAsync(loginDataRequest.Attributes.UserName, refreshToken, DateTime.UtcNow.AddDays(1));
-                //await _userRepository.tore
-                var loginRes = new LoginDataResponse
-                {
-                    AccessToken = token,
-                    RefreshToken = refreshToken
-                };
-                return _serviceResponseMapper.Map(loginRes);
-            }
+            var value = _configuration["Jwt:AccessTokenValidity"];
+            return int.TryParse(value, out var minutes) ? minutes : 2;
+        }
+
+        private int GetRefreshTokenValidity()
+        {
+            var value = _configuration["Jwt:RefreshTokenValidity"];
+            return int.TryParse(value, out var days) ? days : 7;
         }
 
         private string GenerateJwtToken(string username, IList<string> roles)
@@ -93,7 +78,7 @@ namespace emec.business.managers
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.Now.AddSeconds(GetAccessTokenValidity()),
                 signingCredentials: credentials
             );
 
@@ -106,6 +91,32 @@ namespace emec.business.managers
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomBytes);
             return Convert.ToBase64String(randomBytes);
+        }
+
+        public async Task<ResponseBase> Authenticate(LoginDataRequest loginDataRequest)
+        {
+            var res = await _userRepository.ValidateUserAsync(loginDataRequest.Attributes.UserName, loginDataRequest.Attributes.Password);
+            if (!res)
+            {
+                var loginRes = new ResponseMessage
+                {
+                    Message = "Invalid username or password."
+                };
+                return _serviceResponseErrorMapper.Map(loginRes);
+            }
+            else
+            {
+                var roles = await _userRepository.GetUserRolesAsync(loginDataRequest.Attributes.UserName);
+                var token = GenerateJwtToken(loginDataRequest.Attributes.UserName, roles);
+                var refreshToken = GenerateRefreshToken();
+                await _userRepository.StoreRefreshTokenAsync(loginDataRequest.Attributes.UserName, refreshToken, DateTime.UtcNow.AddSeconds(GetRefreshTokenValidity()));
+                var loginRes = new LoginDataResponse
+                {
+                    AccessToken = token,
+                    RefreshToken = refreshToken
+                };
+                return _serviceResponseMapper.Map(loginRes);
+            }
         }
 
         public async Task<ResponseBase> RefreshToken(string userName, string refreshToken)
@@ -122,7 +133,7 @@ namespace emec.business.managers
             var roles = await _userRepository.GetUserRolesAsync(userName);
             var newToken = GenerateJwtToken(userName, roles);
             var newRefreshToken = GenerateRefreshToken();
-            await _userRepository.StoreRefreshTokenAsync(userName, newRefreshToken, DateTime.UtcNow.AddDays(7));
+            await _userRepository.StoreRefreshTokenAsync(userName, newRefreshToken, DateTime.UtcNow.AddSeconds(GetRefreshTokenValidity()));
             var response = new LoginDataResponse
             {
                 AccessToken = newToken,
