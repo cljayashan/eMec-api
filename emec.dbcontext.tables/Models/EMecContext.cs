@@ -58,10 +58,13 @@ public partial class EMecContext : DbContext
             entity.Property(e => e.PasswordHash)
                 .IsRequired()
                 .HasMaxLength(256);
+            entity.Property(e => e.RefreshToken)
+                .HasMaxLength(128)
+                .IsUnicode(false);
+            entity.Property(e => e.RefreshTokenExpiry).HasColumnType("datetime");
             entity.Property(e => e.Salt)
                 .IsRequired()
-                .HasMaxLength(16)
-                .IsFixedLength();
+                .HasMaxLength(50);
             entity.Property(e => e.UserName)
                 .IsRequired()
                 .HasMaxLength(100);

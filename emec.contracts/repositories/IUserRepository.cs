@@ -7,5 +7,7 @@ namespace emec.contracts.repositories
     {
         Task<IList<string>> GetUserRolesAsync(string userName);
         Task<bool> ValidateUserAsync(string userName, string password);
+        Task StoreRefreshTokenAsync(string userName, string refreshToken, DateTime expiry);
+        Task<bool> ValidateRefreshTokenAsync(string userName, string refreshToken);
     }
 }

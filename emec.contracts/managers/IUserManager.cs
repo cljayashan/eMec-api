@@ -9,5 +9,7 @@ namespace emec.contracts.managers
     {
         Task<IList<string>> GetUserRolesAsync(string userName);
         Task<ResponseBase> Authenticate(LoginDataRequest loginDataRequest);
+        Task<ResponseBase> RefreshToken(string userName, string password);
+
     }
 }

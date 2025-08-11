@@ -44,6 +44,23 @@ namespace emec.data.repositories
             return PasswordHelper.VerifyPassword(password, user.Salt, user.PasswordHash);
         }
 
+        public async Task StoreRefreshTokenAsync(string userName, string refreshToken, DateTime expiry)
+        {
+            var user = await _context.TblUsers.FirstOrDefaultAsync(u => u.UserName == userName);
+            if (user == null) return;
+            // Assume TblUsers has RefreshToken and RefreshTokenExpiry columns
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiry = expiry;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> ValidateRefreshTokenAsync(string userName, string refreshToken)
+        {
+            var user = await _context.TblUsers.FirstOrDefaultAsync(u => u.UserName == userName);
+            if (user == null) return false;
+            return user.RefreshToken == refreshToken && user.RefreshTokenExpiry > DateTime.UtcNow;
+        }
+
 
 
         internal static class PasswordHelper

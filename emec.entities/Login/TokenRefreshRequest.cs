@@ -7,10 +7,9 @@ using emec.shared.models;
 
 namespace emec.entities.Login
 {
-    public class LoginDataResponse
+    public class TokenRefreshRequest : RequestBase
     {
-        public required string AccessToken { get; set; }
-
-        public required string RefreshToken { get; set; }
+        public required string Action { get; set; }
+        public required TokenRefreshAttribute Attributes { get; set; }
     }
 }

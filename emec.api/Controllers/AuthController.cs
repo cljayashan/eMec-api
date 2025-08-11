@@ -8,23 +8,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace emec.api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
         private readonly IUserManager _userManager;
         private readonly IMapper<ResponseMessage, ResponseBase> _serviceResponseErrorMapper;
         private readonly IErrorMessages _errormessages;
 
         public AuthController(
-            IConfiguration configuration,
             IUserManager userManager,
             IMapper<ResponseMessage, ResponseBase> serviceResponseErrorMapper,
             IErrorMessages errorMessages
             )
         {
-            _configuration = configuration;
             _userManager = userManager;
             _errormessages = errorMessages;
             _serviceResponseErrorMapper = serviceResponseErrorMapper;
@@ -41,6 +38,27 @@ namespace emec.api.Controllers
             {
                 return _serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted());
             }
-        }        
+        }    
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> Refresh([FromBody] TokenRefreshRequest request)
+        {
+            if (request.Action == Constants.ApiActions.Authenticate)
+            {
+                var result = await _userManager.RefreshToken(request.Attributes.UserName, request.Attributes.RefreshToken);
+                if (!result.IsSuccess)
+                {
+                    return Unauthorized(result.Error);
+                }                    
+                return Ok(result.Result);
+            }
+            else
+            {
+                return BadRequest(_serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted()));
+
+            }
+               
+        }
     }
+   
 }

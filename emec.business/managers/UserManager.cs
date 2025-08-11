@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using emec.contracts.managers;
 using emec.contracts.repositories;
@@ -47,24 +48,25 @@ namespace emec.business.managers
         public async Task<ResponseBase> Authenticate(LoginDataRequest loginDataRequest)
         {
             var res = await _userRepository.ValidateUserAsync(loginDataRequest.Attributes.UserName, loginDataRequest.Attributes.Password);
-            //Login failed
             if (!res)
             {
                 var loginRes = new ResponseMessage
                 {
                     Message = "Invalid username or password."
-
                 };
                 return _serviceResponseErrorMapper.Map(loginRes);
             }
-            //Login successful
             else
             {
                 var roles = await _userRepository.GetUserRolesAsync(loginDataRequest.Attributes.UserName);
                 var token = GenerateJwtToken(loginDataRequest.Attributes.UserName, roles);
+                var refreshToken = GenerateRefreshToken();
+                await _userRepository.StoreRefreshTokenAsync(loginDataRequest.Attributes.UserName, refreshToken, DateTime.UtcNow.AddDays(1));
+                //await _userRepository.tore
                 var loginRes = new LoginDataResponse
                 {
-                    Token = token
+                    AccessToken = token,
+                    RefreshToken = refreshToken
                 };
                 return _serviceResponseMapper.Map(loginRes);
             }
@@ -98,7 +100,41 @@ namespace emec.business.managers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        private string GenerateRefreshToken()
+        {
+            var randomBytes = new byte[64];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomBytes);
+            return Convert.ToBase64String(randomBytes);
+        }
 
+        public async Task<ResponseBase> RefreshToken(string userName, string refreshToken)
+        {
+            var valid = await _userRepository.ValidateRefreshTokenAsync(userName, refreshToken);
+            if (!valid)
+            {
+                var error = new ResponseMessage
+                {
+                    Message = "Invalid or expired refresh token."
+                };
+                return _serviceResponseErrorMapper.Map(error);
+            }
+            var roles = await _userRepository.GetUserRolesAsync(userName);
+            var newToken = GenerateJwtToken(userName, roles);
+            var newRefreshToken = GenerateRefreshToken();
+            await _userRepository.StoreRefreshTokenAsync(userName, newRefreshToken, DateTime.UtcNow.AddDays(7));
+            var response = new LoginDataResponse
+            {
+                AccessToken = newToken,
+                RefreshToken = newRefreshToken
+            };
+            return _serviceResponseMapper.Map(response);
+        }
+
+        //public Task<bool> ValidateUserAsync(string userName, string password, DateTime dateTime)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
 

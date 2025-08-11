@@ -14,4 +14,8 @@ public partial class TblUser
     public string PasswordHash { get; set; }
 
     public string Salt { get; set; }
+
+    public string RefreshToken { get; set; }
+
+    public DateTime? RefreshTokenExpiry { get; set; }
 }
