@@ -35,7 +35,23 @@ namespace emec.api.Controllers
         {
             if (loginDataRequest.Action == Constants.ApiActions.Authenticate)
             {
-                return await _userManager.Authenticate(loginDataRequest);
+                var response = await _userManager.Authenticate(loginDataRequest);
+                if (response.IsSuccess && response.Result is emec.entities.Login.LoginDataResponse loginDataResponse)
+                {
+                    // Set refresh token as HttpOnly, Secure cookie
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true, // Should be true in production
+                        SameSite = SameSiteMode.Strict, // Use None if API and client are on different domains
+                        Expires = DateTime.UtcNow.AddSeconds(80) // Or use your configured refresh token expiry
+                    };
+                    Response.Cookies.Append("refreshToken", loginDataResponse.RefreshToken, cookieOptions);
+
+                    // Remove refresh token from response body
+                    loginDataResponse.RefreshToken = null!;
+                }
+                return response;
             }
             else
             {
@@ -48,22 +64,37 @@ namespace emec.api.Controllers
         {
             if (request.Action == Constants.ApiActions.Authenticate)
             {
-                var result = await _userManager.RefreshToken(request.Attributes.UserName, request.Attributes.RefreshToken);
-                if (!result.IsSuccess)
+                // Read refresh token from cookie
+                var refreshToken = Request.Cookies["refreshToken"];
+                if (string.IsNullOrEmpty(refreshToken))
                 {
-                    //return Unauthorized(result.Error);
                     return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidOrExpiredRefreshToken());
                 }
-                else
+                var result = await _userManager.RefreshToken(request.Attributes.UserName, refreshToken);
+                if (!result.IsSuccess)
                 {
-                    //return Ok(result.Result);
-                    return _serviceResponseMapper.Map(result.Result);
+                    return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidOrExpiredRefreshToken());
                 }
+                else if (result.Result is emec.entities.Login.LoginDataResponse loginDataResponse)
+                {
+                    // Overwrite the refresh token cookie
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true, // Should be true in production
+                        SameSite = SameSiteMode.Strict, // Use None if API and client are on different domains
+                        Expires = DateTime.UtcNow.AddSeconds(80) // Or use your configured refresh token expiry
+                    };
+                    Response.Cookies.Append("refreshToken", loginDataResponse.RefreshToken, cookieOptions);
+
+                    // Remove refresh token from response body
+                    loginDataResponse.RefreshToken = null!;
+                }
+                return result;
             }
             else
             {
                 return BadRequest(_serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted()));
-
             }
 
         }
