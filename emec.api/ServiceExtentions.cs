@@ -14,6 +14,8 @@ using emec.shared.Errors;
 using Microsoft.EntityFrameworkCore;
 using emec.entities.Login;
 using emec.business.validators.Login;
+using emec.business.validators.Vehicle;
+using emec.entities.Vehicle.Register;
 
 namespace emec.api
 {
@@ -49,7 +51,7 @@ namespace emec.api
 
 
             //DbContext configuration
-            services.AddDbContext<EMecContext>(options => options.UseSqlServer(configuration["AppConfiguration:ConnectionString"]));
+            services.AddDbContext<eMecContext>(options => options.UseSqlServer(configuration["AppConfiguration:ConnectionString"]));
 
             //Configurations
             //services.Configure<AppConfiguration>(configuration.GetSection("AppConfiguration"));
@@ -57,10 +59,19 @@ namespace emec.api
             //Managers
             services.AddScoped<IHealthCheckManager, HealthCheckManager>();
             services.AddScoped<IUserManager, UserManager>();
+            services.AddScoped<IVehicleManager, VehicleManager>(provider =>
+                new VehicleManager(
+                    provider.GetRequiredService<IVehicleRepository>(),
+                    provider.GetRequiredService<IMapper<object, ResponseBase>>(),
+                    provider.GetRequiredService<IMapper<ResponseMessage, ResponseBase>>(),
+                    provider.GetRequiredService<IValidator<VehicleRegisterDataRequest>>()
+                )
+            );
 
             //Validators
             services.AddScoped<IValidator<HealthCheckDataRequest>, HealthCheckRequestValidator>();
             services.AddScoped<IValidator<LoginDataRequest>, LoginRequestValidator>();
+            services.AddScoped<IValidator<VehicleRegisterDataRequest>, VehicleRegisterRequestValidator>();
 
             //Mappers
             services.AddSingleton<IMapper<ResponseMessage, ResponseBase>, ServiceErrorMapper>();
@@ -69,6 +80,7 @@ namespace emec.api
             //Repositories
             services.AddScoped<IHealthCheckRepository, HealthCheckRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IVehicleRepository, VehicleRepository>();
 
             //resource
             services.AddScoped<IErrorMessages, ErrorMessages>();

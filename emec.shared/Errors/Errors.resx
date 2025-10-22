@@ -126,4 +126,37 @@
   <data name="E0003" xml:space="preserve">
     <value>Invalid or expired refresh token.</value>
   </data>
+  <data name="E0004" xml:space="preserve">
+    <value>Request or attributes cannot be null.</value>
+  </data>
+  <data name="E0005" xml:space="preserve">
+    <value>Vehicle Id is required.</value>
+  </data>
+  <data name="E0006" xml:space="preserve">
+    <value>Province is required.</value>
+  </data>
+  <data name="E0007" xml:space="preserve">
+    <value>Prefix is required.</value>
+  </data>
+  <data name="E0008" xml:space="preserve">
+    <value>Number is required and must be non-zero.</value>
+  </data>
+  <data name="E0009" xml:space="preserve">
+    <value>Brand is required.</value>
+  </data>
+  <data name="E0010" xml:space="preserve">
+    <value>Model is required.</value>
+  </data>
+  <data name="E0011" xml:space="preserve">
+    <value>Version is required.</value>
+  </data>
+  <data name="E0012" xml:space="preserve">
+    <value>Year of Manufacture (YoM) is required and must be non-zero.</value>
+  </data>
+  <data name="E0013" xml:space="preserve">
+    <value>Year of Registration (YoR) is required and must be non-zero.</value>
+  </data>
+  <data name="E0014" xml:space="preserve">
+    <value>Test</value>
+  </data>
 </root>

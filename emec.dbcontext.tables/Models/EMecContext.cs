@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace emec.dbcontext.tables.Models;
 
-public partial class EMecContext : DbContext
+public partial class eMecContext : DbContext
 {
-    public EMecContext(DbContextOptions<EMecContext> options)
+    public eMecContext(DbContextOptions<eMecContext> options)
         : base(options)
     {
     }
@@ -20,6 +20,8 @@ public partial class EMecContext : DbContext
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
     public virtual DbSet<TblUserRole> TblUserRoles { get; set; }
+
+    public virtual DbSet<TblWsVehicle> TblWsVehicles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -77,6 +79,37 @@ public partial class EMecContext : DbContext
             entity.ToTable("TBL_UserRoles");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<TblWsVehicle>(entity =>
+        {
+            entity.ToTable("TBL_WS_Vehicle");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Brand)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Model)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Number)
+                .HasMaxLength(4)
+                .IsFixedLength();
+            entity.Property(e => e.Prefix)
+                .HasMaxLength(3)
+                .IsFixedLength();
+            entity.Property(e => e.Province)
+                .HasMaxLength(2)
+                .IsUnicode(false);
+            entity.Property(e => e.Version)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.YoM)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.YoR)
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -86,5 +86,104 @@ namespace emec.shared.Errors {
                 return ResourceManager.GetString("E0003", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request or attributes cannot be null..
+        /// </summary>
+        internal static string E0004 {
+            get {
+                return ResourceManager.GetString("E0004", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle Id is required..
+        /// </summary>
+        internal static string E0005 {
+            get {
+                return ResourceManager.GetString("E0005", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Province is required..
+        /// </summary>
+        internal static string E0006 {
+            get {
+                return ResourceManager.GetString("E0006", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prefix is required..
+        /// </summary>
+        internal static string E0007 {
+            get {
+                return ResourceManager.GetString("E0007", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number is required and must be non-zero..
+        /// </summary>
+        internal static string E0008 {
+            get {
+                return ResourceManager.GetString("E0008", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Brand is required..
+        /// </summary>
+        internal static string E0009 {
+            get {
+                return ResourceManager.GetString("E0009", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model is required..
+        /// </summary>
+        internal static string E0010 {
+            get {
+                return ResourceManager.GetString("E0010", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version is required..
+        /// </summary>
+        internal static string E0011 {
+            get {
+                return ResourceManager.GetString("E0011", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year of Manufacture (YoM) is required and must be non-zero..
+        /// </summary>
+        internal static string E0012 {
+            get {
+                return ResourceManager.GetString("E0012", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year of Registration (YoR) is required and must be non-zero..
+        /// </summary>
+        internal static string E0013 {
+            get {
+                return ResourceManager.GetString("E0013", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test.
+        /// </summary>
+        internal static string E0014 {
+            get {
+                return ResourceManager.GetString("E0014", resourceCulture);
+            }
+        }
     }
 }

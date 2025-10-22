@@ -12,9 +12,9 @@ namespace emec.data.repositories
 {
     public class HealthCheckRepository : IHealthCheckRepository
     {
-        private readonly EMecContext _emecContext;
+        private readonly eMecContext _emecContext;
 
-        public HealthCheckRepository(EMecContext emecContext)
+        public HealthCheckRepository(eMecContext emecContext)
         {
             _emecContext = emecContext ?? throw new ArgumentNullException(nameof(emecContext));
         }

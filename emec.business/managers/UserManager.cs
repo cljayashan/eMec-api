@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -48,13 +49,14 @@ namespace emec.business.managers
         private int GetAccessTokenValidity()
         {
             var value = _configuration["Jwt:AccessTokenValidity"];
-            return int.TryParse(value, out var minutes) ? minutes : 2;
+            var ex= int.TryParse(value, out var seconds) ? seconds : 30;
+            return ex;
         }
 
         private int GetRefreshTokenValidity()
         {
             var value = _configuration["Jwt:RefreshTokenValidity"];
-            return int.TryParse(value, out var days) ? days : 7;
+            return int.TryParse(value, out var seconds) ? seconds : 60;
         }
 
         private string GenerateJwtToken(string username, IList<string> roles)
@@ -109,12 +111,13 @@ namespace emec.business.managers
                 var roles = await _userRepository.GetUserRolesAsync(loginDataRequest.Attributes.UserName);
                 var token = GenerateJwtToken(loginDataRequest.Attributes.UserName, roles);
                 var refreshToken = GenerateRefreshToken();
-                await _userRepository.StoreRefreshTokenAsync(loginDataRequest.Attributes.UserName, refreshToken, DateTime.UtcNow.AddSeconds(GetRefreshTokenValidity()));
+                await _userRepository.StoreRefreshTokenAsync(loginDataRequest.Attributes.UserName, refreshToken, DateTime.Now.AddSeconds(GetRefreshTokenValidity()));
                 var loginRes = new LoginDataResponse
                 {
                     AccessToken = token,
                     RefreshToken = refreshToken
                 };
+                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt") + $"Generated JWT Token: {token}");
                 return _serviceResponseMapper.Map(loginRes);
             }
         }
@@ -133,12 +136,13 @@ namespace emec.business.managers
             var roles = await _userRepository.GetUserRolesAsync(userName);
             var newToken = GenerateJwtToken(userName, roles);
             var newRefreshToken = GenerateRefreshToken();
-            await _userRepository.StoreRefreshTokenAsync(userName, newRefreshToken, DateTime.UtcNow.AddSeconds(GetRefreshTokenValidity()));
+            await _userRepository.StoreRefreshTokenAsync(userName, newRefreshToken, DateTime.Now.AddSeconds(GetRefreshTokenValidity()));
             var response = new LoginDataResponse
             {
                 AccessToken = newToken,
                 RefreshToken = newRefreshToken
             };
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt") + $"Refreshed JWT Token: {newToken}");
             return _serviceResponseMapper.Map(response);
         }
 

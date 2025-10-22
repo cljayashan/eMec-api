@@ -10,8 +10,8 @@ namespace emec.data.repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly EMecContext _context;
-        public UserRepository(EMecContext context)
+        private readonly eMecContext _context;
+        public UserRepository(eMecContext context)
         {
             _context = context;
         }
@@ -58,7 +58,7 @@ namespace emec.data.repositories
         {
             var user = await _context.TblUsers.FirstOrDefaultAsync(u => u.UserName == userName);
             if (user == null) return false;
-            return user.RefreshToken == refreshToken && user.RefreshTokenExpiry > DateTime.UtcNow;
+            return user.RefreshToken == refreshToken && user.RefreshTokenExpiry > DateTime.Now;
         }
 
 
