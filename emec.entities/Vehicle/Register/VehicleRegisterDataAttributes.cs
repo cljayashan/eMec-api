@@ -16,7 +16,7 @@ namespace emec.entities.Vehicle.Register
         public string Version { get; set; }
         public int? YoM { get; set; }
         public int? YoR { get; set; }
-        public string Remarks { get; set; }
+        public string? Remarks { get; set; }
         public Guid OwnerId { get; set; }
 
 
