@@ -6,6 +6,6 @@ namespace emec.contracts.repositories
 {
     public interface IVehicleRepository
     {
-        Task<bool> RegisterVehicleAsync(VehicleRegisterDataAttributes attributes);
+        Task<VehicleRegistrationResponse> RegisterVehicleAsync(VehicleRegistrationDataSave vehicleReg);
     }
 }

@@ -32,6 +32,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[TBL_WS_Customer]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[TBL_WS_Vehicle]",
          "ObjectType": 0
       }

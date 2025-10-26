@@ -1,21 +1,23 @@
 ﻿using System.Text;
 using emec.business.managers;
+using emec.business.mappers;
+using emec.business.validators.HealthCheck;
+using emec.business.validators.Login;
+using emec.business.validators.Vehicle;
 using emec.contracts.managers;
 using emec.contracts.repositories;
+using emec.data.mappers;
 using emec.data.repositories;
 using emec.dbcontext.tables.Models;
 using emec.entities.HealthCheck;
+using emec.entities.Login;
+using emec.entities.Vehicle.Register;
 using emec.shared.Contracts;
+using emec.shared.Errors;
 using emec.shared.Mappers;
 using emec.shared.models;
-using Microsoft.IdentityModel.Tokens;
-using emec.business.validators.HealthCheck;
-using emec.shared.Errors;
 using Microsoft.EntityFrameworkCore;
-using emec.entities.Login;
-using emec.business.validators.Login;
-using emec.business.validators.Vehicle;
-using emec.entities.Vehicle.Register;
+using Microsoft.IdentityModel.Tokens;
 
 namespace emec.api
 {
@@ -59,14 +61,7 @@ namespace emec.api
             //Managers
             services.AddScoped<IHealthCheckManager, HealthCheckManager>();
             services.AddScoped<IUserManager, UserManager>();
-            services.AddScoped<IVehicleManager, VehicleManager>(provider =>
-                new VehicleManager(
-                    provider.GetRequiredService<IVehicleRepository>(),
-                    provider.GetRequiredService<IMapper<object, ResponseBase>>(),
-                    provider.GetRequiredService<IMapper<ResponseMessage, ResponseBase>>(),
-                    provider.GetRequiredService<IValidator<VehicleRegisterDataRequest>>()
-                )
-            );
+            services.AddScoped<IVehicleManager, VehicleManager>();
 
             //Validators
             services.AddScoped<IValidator<HealthCheckDataRequest>, HealthCheckRequestValidator>();
@@ -76,6 +71,7 @@ namespace emec.api
             //Mappers
             services.AddSingleton<IMapper<ResponseMessage, ResponseBase>, ServiceErrorMapper>();
             services.AddSingleton<IMapper<object, ResponseBase>, ServiceResponseMapper>();
+            services.AddScoped<IMapper<VehicleRegisterDataRequest, VehicleRegistrationDataSave>, VehicleRegistrationDataSaveRequestMapper>();
 
             //Repositories
             services.AddScoped<IHealthCheckRepository, HealthCheckRepository>();
@@ -84,6 +80,7 @@ namespace emec.api
 
             //resource
             services.AddScoped<IErrorMessages, ErrorMessages>();
+            services.AddScoped<IEntityMapper, EntityMapper>();
 
             //Handlers
 

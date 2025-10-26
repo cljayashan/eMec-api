@@ -24,4 +24,20 @@ public partial class TblWsVehicle
     public string YoM { get; set; }
 
     public string YoR { get; set; }
+
+    public string Remarks { get; set; }
+
+    public Guid CustomerId { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+
+    public int CreatedBy { get; set; }
+
+    public bool Deleted { get; set; }
+
+    public DateTime? DeletedAt { get; set; }
+
+    public int? DeletedBy { get; set; }
+
+    public virtual TblWsCustomer Customer { get; set; }
 }

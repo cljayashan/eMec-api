@@ -157,6 +157,6 @@
     <value>Year of Registration (YoR) is required and must be non-zero.</value>
   </data>
   <data name="E0014" xml:space="preserve">
-    <value>Test</value>
+    <value>Vehicle number must have 4 digits</value>
   </data>
 </root>

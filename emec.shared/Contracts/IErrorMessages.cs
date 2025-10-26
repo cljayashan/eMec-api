@@ -37,5 +37,7 @@ namespace emec.shared.Contracts
         ResponseMessage Vehicle_YoMRequired();
 
         ResponseMessage Vehicle_YoRRequired();
+
+        ResponseMessage Vehicle_NumberMustHave4Digits();
     }
 }

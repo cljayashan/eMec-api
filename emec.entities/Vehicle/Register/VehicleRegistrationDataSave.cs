@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace emec.entities.Vehicle.Register
 {
-    public class VehicleRegisterDataAttributes
+    public class VehicleRegistrationDataSave
     {
+        public Guid Id { get; set; }
         public string Province { get; set; }
         public string Prefix { get; set; }
         public int Number { get; set; }
@@ -26,6 +27,5 @@ namespace emec.entities.Vehicle.Register
         public bool Deleted { get; set; }
         public DateTime DeletedAt { get; set; }
         public int DeletedBy { get; set; }
-
     }
 }

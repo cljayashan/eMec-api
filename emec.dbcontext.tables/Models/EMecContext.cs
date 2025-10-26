@@ -21,6 +21,8 @@ public partial class eMecContext : DbContext
 
     public virtual DbSet<TblUserRole> TblUserRoles { get; set; }
 
+    public virtual DbSet<TblWsCustomer> TblWsCustomers { get; set; }
+
     public virtual DbSet<TblWsVehicle> TblWsVehicles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -81,6 +83,37 @@ public partial class eMecContext : DbContext
             entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
+        modelBuilder.Entity<TblWsCustomer>(entity =>
+        {
+            entity.ToTable("TBL_WS_Customer");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Address)
+                .HasMaxLength(250)
+                .IsUnicode(false);
+            entity.Property(e => e.Fname)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("FName");
+            entity.Property(e => e.Lname)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("LName");
+            entity.Property(e => e.Nic)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasColumnName("NIC");
+            entity.Property(e => e.Phone1)
+                .IsRequired()
+                .HasMaxLength(15)
+                .IsUnicode(false);
+            entity.Property(e => e.Phone2)
+                .HasMaxLength(15)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<TblWsVehicle>(entity =>
         {
             entity.ToTable("TBL_WS_Vehicle");
@@ -89,6 +122,8 @@ public partial class eMecContext : DbContext
             entity.Property(e => e.Brand)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
             entity.Property(e => e.Model)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -101,6 +136,9 @@ public partial class eMecContext : DbContext
             entity.Property(e => e.Province)
                 .HasMaxLength(2)
                 .IsUnicode(false);
+            entity.Property(e => e.Remarks)
+                .HasMaxLength(1000)
+                .IsUnicode(false);
             entity.Property(e => e.Version)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -110,6 +148,11 @@ public partial class eMecContext : DbContext
             entity.Property(e => e.YoR)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.TblWsVehicles)
+                .HasForeignKey(d => d.CustomerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TBL_WS_Vehicle_TBL_WS_Customer");
         });
 
         OnModelCreatingPartial(modelBuilder);

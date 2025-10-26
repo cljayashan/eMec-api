@@ -42,7 +42,6 @@ namespace emec.api.Controllers.Workshop
 
 
         [HttpPost("register")]
-        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<ResponseBase>> RegisterVehicle([FromBody] VehicleRegisterDataRequest vehicleRegisterDataRequest)
         {
             try
@@ -51,17 +50,28 @@ namespace emec.api.Controllers.Workshop
                 {
                     return await _vehicleManager.RegisterVehicle(vehicleRegisterDataRequest);
                 }
-                else
-                {
-                    return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
-                }
+
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
+
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
                 return BadRequest();
             }
-            //return Ok(response);
+        }
+
+        [HttpPost("test")]
+        [Authorize]
+        public ActionResult<ResponseBase> Test()
+        {
+            var response = new ResponseBase
+            {
+                IsSuccess = true,
+                Result = "VehicleController test endpoint is working.",
+                Error = null
+            };
+            return Ok(response);
         }
 
     }
