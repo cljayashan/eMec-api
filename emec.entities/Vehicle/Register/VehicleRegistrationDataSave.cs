@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace emec.entities.Vehicle.Register
+﻿namespace emec.entities.Vehicle.Register
 {
     public class VehicleRegistrationDataSave
     {
@@ -15,8 +9,8 @@ namespace emec.entities.Vehicle.Register
         public string Brand { get; set; }
         public string Model { get; set; }
         public string Version { get; set; }
-        public int YoM { get; set; }
-        public int YoR { get; set; }
+        public int? YoM { get; set; }
+        public int? YoR { get; set; }
         public string Remarks { get; set; }
         public Guid OwnerId { get; set; }
 

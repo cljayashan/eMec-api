@@ -116,36 +116,33 @@ public partial class eMecContext : DbContext
 
         modelBuilder.Entity<TblWsVehicle>(entity =>
         {
+            entity.HasKey(e => new { e.Id, e.Province, e.Prefix, e.Number });
+
             entity.ToTable("TBL_WS_Vehicle");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Province)
+                .HasMaxLength(2)
+                .IsUnicode(false);
+            entity.Property(e => e.Prefix)
+                .HasMaxLength(3)
+                .IsFixedLength();
+            entity.Property(e => e.Number)
+                .HasMaxLength(4)
+                .IsFixedLength();
             entity.Property(e => e.Brand)
+                .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
             entity.Property(e => e.Model)
+                .IsRequired()
                 .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.Number)
-                .HasMaxLength(4)
-                .IsFixedLength();
-            entity.Property(e => e.Prefix)
-                .HasMaxLength(3)
-                .IsFixedLength();
-            entity.Property(e => e.Province)
-                .HasMaxLength(2)
                 .IsUnicode(false);
             entity.Property(e => e.Remarks)
                 .HasMaxLength(1000)
                 .IsUnicode(false);
             entity.Property(e => e.Version)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.YoM)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.YoR)
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
