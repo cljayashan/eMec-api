@@ -3,6 +3,7 @@ using emec.entities.Vehicle.Register;
 using emec.shared.Contracts;
 using emec.shared.Errors;
 using emec.shared.models;
+using static emec.shared.common.Constants;
 
 namespace emec.business.validators.Vehicle
 {
@@ -21,7 +22,7 @@ namespace emec.business.validators.Vehicle
             message = null;
 
 
-            if (request.Action == "add")
+            if (request.Action == ApiActions.Add)
             {
                 message = null;
                

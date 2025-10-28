@@ -45,12 +45,15 @@ namespace emec.data.repositories
             _context.TblWsVehicles.Add(entity);
             var result = await _context.SaveChangesAsync();
 
-            TblWsVehicle insertedVehicle = null;
             if (result > 0)
             {
-                insertedVehicle = entity;
+                return _entityMapper.Map<TblWsVehicle, VehicleRegistrationResponse>(entity);
             }
-            return _entityMapper.Map<TblWsVehicle, VehicleRegistrationResponse>(insertedVehicle);
+            else
+            {
+                return _entityMapper.Map<TblWsVehicle, VehicleRegistrationResponse>(new TblWsVehicle());
+            }
+                
         }
     }
 }

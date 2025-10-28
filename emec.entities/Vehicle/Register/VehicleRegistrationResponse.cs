@@ -15,10 +15,10 @@ namespace emec.entities.Vehicle.Register
         public required string Number { get; set; }
         public required string Brand { get; set; }
         public required string Model { get; set; }
-        public string Version { get; set; }
+        public string? Version { get; set; }
         public int? YoM { get; set; }
         public int? YoR { get; set; }
-        public string Remarks { get; set; }
+        public string? Remarks { get; set; }
         public required string OwnerId { get; set; }
 
 
@@ -26,7 +26,7 @@ namespace emec.entities.Vehicle.Register
         public DateTime CreatedAt { get; set; }
         public int CreatedBy { get; set; }
         public bool Deleted { get; set; }
-        public DateTime DeletedAt { get; set; }
-        public int DeletedBy { get; set; }
+        public DateTime? DeletedAt { get; set; }
+        public int? DeletedBy { get; set; }
     }
 }
