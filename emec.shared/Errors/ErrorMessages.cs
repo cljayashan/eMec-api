@@ -80,5 +80,11 @@ namespace emec.shared.Errors
             Code = "E0013",
             Message = Errors.E0013
         };
+
+        public ResponseMessage Vehicle_NumberMustHave4Digits() => new ResponseMessage
+        {
+            Code = "E0014",
+            Message = Errors.E0014
+        };
     }
 }

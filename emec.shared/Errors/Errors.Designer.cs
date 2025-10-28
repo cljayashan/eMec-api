@@ -178,7 +178,7 @@ namespace emec.shared.Errors {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test.
+        ///   Looks up a localized string similar to Vehicle number must have 4 digits.
         /// </summary>
         internal static string E0014 {
             get {

@@ -1,37 +1,59 @@
 using System.Threading.Tasks;
 using emec.contracts.repositories;
-using emec.entities.Vehicle.Register;
 using emec.dbcontext.tables.Models;
+using emec.entities.Vehicle.Register;
+using emec.shared.Mappers;
+using Microsoft.Extensions.Logging;
 
 namespace emec.data.repositories
 {
     public class VehicleRepository : IVehicleRepository
     {
         private readonly eMecContext _context;
+        private readonly ILogger<VehicleRepository> _logger;
+        private readonly IEntityMapper _entityMapper;
 
-        public VehicleRepository(eMecContext context)
+        public VehicleRepository(eMecContext context, IEntityMapper entityMapper, ILogger<VehicleRepository> logger)
         {
             _context = context;
+            _entityMapper = entityMapper;
+            _logger = logger;
         }
 
-        public async Task<bool> RegisterVehicleAsync(VehicleRegisterDataAttributes attributes)
+        public async Task<VehicleRegistrationResponse> RegisterVehicleAsync(VehicleRegistrationDataSave vehicleReg)
         {
             var entity = new TblWsVehicle
             {
-                Id = Guid.TryParse(attributes.Id, out var guid) ? guid : Guid.NewGuid(),
-                Province = attributes.Province,
-                Prefix = attributes.Prefix,
-                Number = attributes.Number.ToString(),
-                Brand = attributes.Brand,
-                Model = attributes.Model,
-                Version = attributes.Version,
-                YoM = attributes.YoM.ToString(),
-                YoR = attributes.YoR.ToString()
+                Id = Guid.NewGuid(),
+                Province = vehicleReg.Province,
+                Prefix = vehicleReg.Prefix,
+                Number = vehicleReg.Number.ToString(),
+                Brand = vehicleReg.Brand,
+                Model = vehicleReg.Model,
+                Version = vehicleReg.Version,
+                YoM = vehicleReg.YoM,
+                YoR = vehicleReg.YoR,
+                Remarks = vehicleReg.Remarks,
+                CustomerId = vehicleReg.OwnerId,
+                CreatedAt = vehicleReg.CreatedAt,
+                CreatedBy = vehicleReg.CreatedBy,
+                Deleted = false,
+                DeletedAt = null,
+                DeletedBy = null
             };
 
             _context.TblWsVehicles.Add(entity);
             var result = await _context.SaveChangesAsync();
-            return result > 0;
+
+            if (result > 0)
+            {
+                return _entityMapper.Map<TblWsVehicle, VehicleRegistrationResponse>(entity);
+            }
+            else
+            {
+                return _entityMapper.Map<TblWsVehicle, VehicleRegistrationResponse>(new TblWsVehicle());
+            }
+                
         }
     }
 }
