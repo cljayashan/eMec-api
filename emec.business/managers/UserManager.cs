@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -20,7 +19,7 @@ namespace emec.business.managers
 
         private readonly IMapper<Object, ResponseBase> _serviceResponseMapper;
 
-        private readonly IValidator<LoginDataRequest> _userDataRequestValidator;
+        private readonly IValidator<LoginDataRequest> _loginDataRequestValidator;
 
         private readonly IMapper<ResponseMessage, ResponseBase> _serviceResponseErrorMapper;
 
@@ -29,14 +28,14 @@ namespace emec.business.managers
         public UserManager(
             IUserRepository userRepository,
             IMapper<ResponseMessage, ResponseBase> serviceResponseErrorMapper,
-            IValidator<LoginDataRequest> userDataRequestValidator,
+            IValidator<LoginDataRequest> loginDataRequestValidator,
             IMapper<Object, ResponseBase> serviceResponseMapper,
             IConfiguration configuration
             )
         {
             _userRepository = userRepository ?? throw new System.ArgumentNullException(nameof(userRepository));
             _serviceResponseMapper = serviceResponseMapper ?? throw new System.ArgumentNullException(nameof(serviceResponseMapper));
-            _userDataRequestValidator = userDataRequestValidator ?? throw new System.ArgumentNullException(nameof(userDataRequestValidator));
+            _loginDataRequestValidator = loginDataRequestValidator ?? throw new System.ArgumentNullException(nameof(loginDataRequestValidator));
             _serviceResponseErrorMapper = serviceResponseErrorMapper ?? throw new System.ArgumentNullException(nameof(serviceResponseErrorMapper));
             _configuration = configuration ?? throw new System.ArgumentNullException(nameof(configuration));
         }
@@ -97,6 +96,10 @@ namespace emec.business.managers
 
         public async Task<ResponseBase> Authenticate(LoginDataRequest loginDataRequest)
         {
+
+            if(!_loginDataRequestValidator.Validate(loginDataRequest, out ResponseMessage responseMessage))
+                return _serviceResponseErrorMapper.Map(responseMessage);
+
             var res = await _userRepository.ValidateUserAsync(loginDataRequest.Attributes.UserName, loginDataRequest.Attributes.Password);
             if (!res)
             {
@@ -112,13 +115,11 @@ namespace emec.business.managers
                 var token = GenerateJwtToken(loginDataRequest.Attributes.UserName, roles);
                 var refreshToken = GenerateRefreshToken();
                 await _userRepository.StoreRefreshTokenAsync(loginDataRequest.Attributes.UserName, refreshToken, DateTime.Now.AddSeconds(GetRefreshTokenValidity()));
-                var loginRes = new LoginDataResponse
+                return _serviceResponseMapper.Map(new LoginDataResponse
                 {
                     AccessToken = token,
                     RefreshToken = refreshToken
-                };
-                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt") + $"Generated JWT Token: {token}");
-                return _serviceResponseMapper.Map(loginRes);
+                });               
             }
         }
 

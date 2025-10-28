@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using emec.business.managers;
 using emec.business.mappers;
-using emec.business.mappers.Customer;
 using emec.business.validators.Customer;
 using emec.business.validators.HealthCheck;
 using emec.business.validators.Login;
@@ -77,7 +76,6 @@ namespace emec.api
             services.AddSingleton<IMapper<ResponseMessage, ResponseBase>, ServiceErrorMapper>();
             services.AddSingleton<IMapper<object, ResponseBase>, ServiceResponseMapper>();
             services.AddScoped<IMapper<VehicleRegisterDataRequest, VehicleRegistrationDataSave>, VehicleRegistrationDataSaveRequestMapper>();
-            services.AddScoped<IMapper<object, ResponseBase>, SearchCustomerResponseMapper>();
 
             //Repositories
             services.AddScoped<IHealthCheckRepository, HealthCheckRepository>();
