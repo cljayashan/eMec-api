@@ -6,6 +6,7 @@ using emec.entities.Customer;
 using emec.shared.Contracts;
 using emec.shared.Mappers;
 using emec.shared.models;
+using Microsoft.Extensions.Logging;
 
 namespace emec.business.managers
 {
@@ -15,26 +16,38 @@ namespace emec.business.managers
         private readonly IMapper<object, ResponseBase> _serviceResponseMapper;
         private readonly IMapper<ResponseMessage, ResponseBase> _serviceResponseErrorMapper;
         private readonly IValidator<SearchCustomerDataRequest> _customerDataRequestValidator;
+        private readonly ILogger<CustomerManager> _logger;
 
         public CustomerManager(
             ICustomerRepository customerRepository,
             IMapper<object, ResponseBase> serviceResponseMapper,
             IMapper<ResponseMessage, ResponseBase> serviceResponseErrorMapper,
-            IValidator<SearchCustomerDataRequest> customerDataRequestValidator)
+            IValidator<SearchCustomerDataRequest> customerDataRequestValidator,
+             ILogger<CustomerManager> logger)
         {
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
             _serviceResponseMapper = serviceResponseMapper ?? throw new ArgumentNullException(nameof(serviceResponseMapper));
             _serviceResponseErrorMapper = serviceResponseErrorMapper ?? throw new ArgumentNullException(nameof(serviceResponseErrorMapper));
             _customerDataRequestValidator = customerDataRequestValidator ?? throw new ArgumentNullException(nameof(customerDataRequestValidator));
+            _logger = logger; ;
         }
 
         public async Task<ResponseBase> GetCustomersAsync(SearchCustomerDataRequest request)
         {
-            if (!_customerDataRequestValidator.Validate(request, out ResponseMessage message))
-                return _serviceResponseErrorMapper.Map(message);
+            try
+            {
+                if (!_customerDataRequestValidator.Validate(request, out ResponseMessage message))
+                    return _serviceResponseErrorMapper.Map(message);
 
-            var customers = await _customerRepository.GetCustomersAsync(request.Attributes?.Name);
-            return _serviceResponseMapper.Map(customers);
+                var customers = await _customerRepository.GetCustomersAsync(request.Attributes?.Name);
+                return _serviceResponseMapper.Map(customers);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+           
         }
     }
 }
