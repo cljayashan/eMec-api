@@ -23,5 +23,15 @@ public partial class TblWsCustomer
 
     public int Type { get; set; }
 
+    public DateTime CreatedAt { get; set; }
+
+    public int CreatedBy { get; set; }
+
+    public bool Deleted { get; set; }
+
+    public DateTime? DeletedAt { get; set; }
+
+    public int? DeletedBy { get; set; }
+
     public virtual ICollection<TblWsVehicle> TblWsVehicles { get; set; } = new List<TblWsVehicle>();
 }
