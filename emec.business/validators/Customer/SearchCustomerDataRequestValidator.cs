@@ -34,11 +34,11 @@ namespace emec.business.validators.Customer
                 }
                 else if(request.Args[0].ToLower() == "dropdowndata")
                 {
-                    if (string.IsNullOrWhiteSpace(request.Attributes.FName))
-                    {
-                        message = _errorMessages.Common_SearchKeywordIsRequired();
-                        return false;
-                    }
+                    //if (string.IsNullOrWhiteSpace(request.Attributes.FName))
+                    //{
+                    //    message = _errorMessages.Common_SearchKeywordIsRequired();
+                    //    return false;
+                    //}
                 }
             }
 
