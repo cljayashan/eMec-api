@@ -6,6 +6,8 @@ namespace emec.contracts.managers
 {
     public interface ICustomerManager
     {
-        Task<ResponseBase> GetCustomersAsync(SearchCustomerDataRequest request);
+        Task<ResponseBase> GetCustomersAsync(CustomerDataRequest request);
+
+        Task<ResponseBase> GetCustomerIdAndNameAsync(CustomerDataRequest request);
     }
 }

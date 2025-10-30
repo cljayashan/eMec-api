@@ -1,19 +1,48 @@
 using emec.entities.Customer;
-using emec.shared.models;
 using emec.shared.Contracts;
+using emec.shared.Errors;
+using emec.shared.models;
+using static emec.shared.common.Constants;
 
 namespace emec.business.validators.Customer
 {
-    public class SearchCustomerDataRequestValidator : IValidator<SearchCustomerDataRequest>
+    public class SearchCustomerDataRequestValidator : IValidator<CustomerDataRequest>
     {
-        public bool Validate(SearchCustomerDataRequest obj, out ResponseMessage responseMessage)
+        private readonly IErrorMessages _errorMessages;
+
+        public SearchCustomerDataRequestValidator(IErrorMessages errorMessages)
         {
-            responseMessage = new ResponseMessage();
-            if (obj == null || string.IsNullOrWhiteSpace(obj.Action))
+            _errorMessages = errorMessages;
+        }
+
+        public bool Validate(CustomerDataRequest request, out ResponseMessage message)
+        {
+            message = new ResponseMessage();
+
+            if (request == null || string.IsNullOrWhiteSpace(request.Action))
             {
-                responseMessage.Message = "Invalid request.";
+                message.Message = "Invalid request.";
                 return false;
             }
+
+            if (request.Action == ApiActions.List)
+            {
+
+                if (request.Args.Length == 0)
+                {
+                    //TODO: additional validations can be added here in future if needed  
+                }
+                else if(request.Args[0].ToLower() == "dropdowndata")
+                {
+                    if (string.IsNullOrWhiteSpace(request.Attributes.FName))
+                    {
+                        message = _errorMessages.Common_SearchKeywordIsRequired();
+                        return false;
+                    }
+                }
+            }
+
+
             return true;
         }
         public void Dispose() { }

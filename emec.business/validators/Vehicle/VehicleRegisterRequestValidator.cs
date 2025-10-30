@@ -24,7 +24,6 @@ namespace emec.business.validators.Vehicle
 
             if (request.Action == ApiActions.Add)
             {
-                message = null;
                
                 var attr = request.Attributes;
 

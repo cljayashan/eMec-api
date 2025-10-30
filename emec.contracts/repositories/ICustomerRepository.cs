@@ -6,6 +6,8 @@ namespace emec.contracts.repositories
 {
     public interface ICustomerRepository
     {
-        Task<IEnumerable<SearchCustomerDataResponse>> GetCustomersAsync(string? name);
+        Task<IEnumerable<CustomerDataResponse>> GetCustomerIdAndNameAsync(string? name);
+
+        Task<IEnumerable<CustomerDataResponse>> GetCustomersAsync();
     }
 }

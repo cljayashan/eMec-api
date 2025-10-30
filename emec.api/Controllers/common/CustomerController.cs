@@ -34,14 +34,26 @@ namespace emec.api.Controllers.common
         }
 
         [HttpPost("search")]
-        public async Task<ActionResult<ResponseBase>> GetCustomers([FromBody] SearchCustomerDataRequest request)
+        public async Task<ActionResult<ResponseBase>> Customers([FromBody] CustomerDataRequest request)
         {
             try
             {
                 if (request.Action.Equals(Constants.ApiActions.List))
                 {
-                    var response = await _customerManager.GetCustomersAsync(request);
-                    return response;
+                    if(request.Args == null || request.Args.Length == 0)
+                    {
+                        var response = await _customerManager.GetCustomersAsync(request);
+                        return response;
+                    }
+                    else
+                    {
+                        if (request.Args[0] == "dropdowndata" )
+                        {
+                            var response = await _customerManager.GetCustomerIdAndNameAsync(request);
+                            return response;
+                        }
+                    }
+                    
                 }
                 return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
             }

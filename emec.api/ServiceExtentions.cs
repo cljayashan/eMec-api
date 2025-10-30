@@ -70,7 +70,7 @@ namespace emec.api
             services.AddScoped<IValidator<HealthCheckDataRequest>, HealthCheckRequestValidator>();
             services.AddScoped<IValidator<LoginDataRequest>, LoginRequestValidator>();
             services.AddScoped<IValidator<VehicleRegisterDataRequest>, VehicleRegisterRequestValidator>();
-            services.AddScoped<IValidator<SearchCustomerDataRequest>, SearchCustomerDataRequestValidator>();
+            services.AddScoped<IValidator<CustomerDataRequest>, SearchCustomerDataRequestValidator>();
 
             //Mappers
             services.AddSingleton<IMapper<ResponseMessage, ResponseBase>, ServiceErrorMapper>();
