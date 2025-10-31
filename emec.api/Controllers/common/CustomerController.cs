@@ -40,20 +40,20 @@ namespace emec.api.Controllers.common
             {
                 if (request.Action.Equals(Constants.ApiActions.List))
                 {
-                    if(request.Args == null || request.Args.Length == 0)
+                    if (request.Args == null || request.Args.Length == 0)
                     {
                         var response = await _customerManager.GetCustomersAsync(request);
                         return response;
                     }
                     else
                     {
-                        if (request.Args[0] == "dropdowndata" )
+                        if (request.Args[0].Equals("dropdowndata", StringComparison.OrdinalIgnoreCase))
                         {
                             var response = await _customerManager.GetCustomerIdAndNameAsync(request);
                             return response;
                         }
                     }
-                    
+
                 }
                 return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
             }

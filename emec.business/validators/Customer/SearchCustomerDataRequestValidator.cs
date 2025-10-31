@@ -28,11 +28,11 @@ namespace emec.business.validators.Customer
             if (request.Action == ApiActions.List)
             {
 
-                if (request.Args.Length == 0)
+                if (request.Args == null || request.Args.Length == 0)
                 {
                     //TODO: additional validations can be added here in future if needed  
                 }
-                else if(request.Args[0].ToLower() == "dropdowndata")
+                else if(request.Args[0].Equals("dropdowndata",StringComparison.OrdinalIgnoreCase))
                 {
                     //if (string.IsNullOrWhiteSpace(request.Attributes.FName))
                     //{
