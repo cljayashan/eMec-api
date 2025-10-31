@@ -1,13 +1,11 @@
 ﻿using emec.contracts.managers;
-using emec.entities.HealthCheck;
-using emec.entities.Login;
+using emec.entities.Vehicle.List;
 using emec.entities.Vehicle.Register;
 using emec.shared.common;
 using emec.shared.Contracts;
 using emec.shared.Mappers;
 using emec.shared.models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace emec.api.Controllers.Workshop
@@ -58,6 +56,25 @@ namespace emec.api.Controllers.Workshop
             {
                 _logger.LogError(ex.ToString());
                 return BadRequest();
+            }
+        }
+
+        [HttpPost("list")]
+        public async Task<ActionResult<ResponseBase>> GetAllVehicles([FromBody] VehicleListDataRequest request)
+        {
+            try
+            {
+                if (request.Action.Equals(Constants.ApiActions.List))
+                {
+                    return await _vehicleManager.GetAllVehiclesAsync(request);
+                }
+
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
             }
         }
 

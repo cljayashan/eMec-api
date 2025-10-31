@@ -91,6 +91,8 @@ public partial class eMecContext : DbContext
             entity.Property(e => e.Address)
                 .HasMaxLength(250)
                 .IsUnicode(false);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
             entity.Property(e => e.Fname)
                 .IsRequired()
                 .HasMaxLength(50)

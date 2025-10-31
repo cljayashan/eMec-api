@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <Folder Include="handlers\" />
+    <Folder Include="mappers\Authentication\" />
+    <Folder Include="mappers\Customer\" />
   </ItemGroup>
 
   <ItemGroup>

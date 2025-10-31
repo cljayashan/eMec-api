@@ -7,17 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Errors\Errors.Designer.cs">
+    <Compile Update="Errors\ErrorResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Errors.resx</DependentUpon>
+      <DependentUpon>ErrorResource.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Errors\Errors.resx">
+    <EmbeddedResource Update="Errors\ErrorResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+      <LastGenOutput>ErrorResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using emec.entities.Vehicle.Register;
+using emec.entities.Vehicle.List;
 using emec.shared.models;
 
 namespace emec.contracts.repositories
@@ -7,5 +8,6 @@ namespace emec.contracts.repositories
     public interface IVehicleRepository
     {
         Task<VehicleRegistrationResponse> RegisterVehicleAsync(VehicleRegistrationDataSave vehicleReg);
+        Task<List<VehicleListResponse>> GetAllVehiclesAsync();
     }
 }
