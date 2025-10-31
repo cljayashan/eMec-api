@@ -29,7 +29,7 @@ namespace emec.business.managers
             _serviceResponseMapper = serviceResponseMapper ?? throw new ArgumentNullException(nameof(serviceResponseMapper));
             _serviceResponseErrorMapper = serviceResponseErrorMapper ?? throw new ArgumentNullException(nameof(serviceResponseErrorMapper));
             _customerDataRequestValidator = customerDataRequestValidator ?? throw new ArgumentNullException(nameof(customerDataRequestValidator));
-            _logger = logger; ;
+            _logger = logger;
         }
 
         public async Task<ResponseBase> GetCustomersAsync(CustomerDataRequest request)
@@ -47,7 +47,7 @@ namespace emec.business.managers
                 _logger.LogError(ex.ToString());
                 throw;
             }
-           
+
         }
 
         public async Task<ResponseBase> GetCustomerIdAndNameAsync(CustomerDataRequest request)

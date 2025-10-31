@@ -14,6 +14,7 @@ using emec.entities.Customer;
 using emec.entities.HealthCheck;
 using emec.entities.Login;
 using emec.entities.Vehicle.Register;
+using emec.entities.Vehicle.List;
 using emec.shared.Contracts;
 using emec.shared.Errors;
 using emec.shared.Mappers;
@@ -70,6 +71,7 @@ namespace emec.api
             services.AddScoped<IValidator<HealthCheckDataRequest>, HealthCheckRequestValidator>();
             services.AddScoped<IValidator<LoginDataRequest>, LoginRequestValidator>();
             services.AddScoped<IValidator<VehicleRegisterDataRequest>, VehicleRegisterRequestValidator>();
+            services.AddScoped<IValidator<VehicleListDataRequest>, VehicleListDataRequestValidator>();
             services.AddScoped<IValidator<CustomerDataRequest>, SearchCustomerDataRequestValidator>();
 
             //Mappers
