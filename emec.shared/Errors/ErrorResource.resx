@@ -162,4 +162,10 @@
   <data name="E0015" xml:space="preserve">
     <value>Search keyword is required</value>
   </data>
+  <data name="E0016" xml:space="preserve">
+    <value>Request attributes are required</value>
+  </data>
+  <data name="E0017" xml:space="preserve">
+    <value>Customer ID is required</value>
+  </data>
 </root>

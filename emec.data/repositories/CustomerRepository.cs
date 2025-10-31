@@ -90,5 +90,31 @@ namespace emec.data.repositories
                 throw;
             }
         }
+
+        public async Task<bool> DeleteCustomerAsync(Guid customerId, int deletedBy)
+        {
+            try
+            {
+                var customer = await _context.TblWsCustomers
+                    .FirstOrDefaultAsync(c => c.Id == customerId && c.Deleted == false);
+
+                if (customer == null)
+                {
+                    return false;
+                }
+
+                customer.Deleted = true;
+                customer.DeletedAt = DateTime.Now;
+                customer.DeletedBy = deletedBy;
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
     }
 }

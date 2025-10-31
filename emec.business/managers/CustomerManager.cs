@@ -1,8 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using emec.contracts.managers;
 using emec.contracts.repositories;
 using emec.entities.Customer;
+using emec.entities.Customer.Delete;
 using emec.entities.Customer.View;
 using emec.shared.Contracts;
 using emec.shared.Mappers;
@@ -18,6 +17,7 @@ namespace emec.business.managers
         private readonly IMapper<ResponseMessage, ResponseBase> _serviceResponseErrorMapper;
         private readonly IValidator<CustomerDataRequest> _customerDataRequestValidator;
         private readonly IValidator<CustomerViewRequest> _customerViewRequestValidator;
+        private readonly IValidator<CustomerDeleteRequest> _customerDeleteRequestValidator;
         private readonly ILogger<CustomerManager> _logger;
 
         public CustomerManager(
@@ -26,6 +26,7 @@ namespace emec.business.managers
             IMapper<ResponseMessage, ResponseBase> serviceResponseErrorMapper,
             IValidator<CustomerDataRequest> customerDataRequestValidator,
             IValidator<CustomerViewRequest> customerViewRequestValidator,
+            IValidator<CustomerDeleteRequest> customerDeleteRequestValidator,
              ILogger<CustomerManager> logger)
         {
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
@@ -33,6 +34,7 @@ namespace emec.business.managers
             _serviceResponseErrorMapper = serviceResponseErrorMapper ?? throw new ArgumentNullException(nameof(serviceResponseErrorMapper));
             _customerDataRequestValidator = customerDataRequestValidator ?? throw new ArgumentNullException(nameof(customerDataRequestValidator));
             _customerViewRequestValidator = customerViewRequestValidator ?? throw new ArgumentNullException(nameof(customerViewRequestValidator));
+            _customerDeleteRequestValidator = customerDeleteRequestValidator ?? throw new ArgumentNullException(nameof(customerDeleteRequestValidator));
             _logger = logger;
         }
 
@@ -87,6 +89,31 @@ namespace emec.business.managers
                 }
 
                 return _serviceResponseMapper.Map(customer);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        public async Task<ResponseBase> DeleteCustomerAsync(CustomerDeleteRequest request)
+        {
+            try
+            {
+                if (!_customerDeleteRequestValidator.Validate(request, out ResponseMessage message))
+                    return _serviceResponseErrorMapper.Map(message);
+
+                var result = await _customerRepository.DeleteCustomerAsync(request.Attributes.CustomerId, 1); //TODO: get deletedBy from logged in user
+                
+                if (!result)
+                {
+                    var error = new ResponseMessage { Message = "Customer not found or already deleted" };
+                    return _serviceResponseErrorMapper.Map(error);
+                }
+
+                var successResponse = new { Success = true, Message = "Customer deleted successfully" };
+                return _serviceResponseMapper.Map(successResponse);
             }
             catch (Exception ex)
             {

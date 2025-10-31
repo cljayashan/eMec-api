@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using emec.entities.Customer;
 using emec.entities.Customer.View;
+using emec.entities.Customer.Delete;
 using emec.shared.models;
 
 namespace emec.contracts.managers
@@ -12,5 +13,7 @@ namespace emec.contracts.managers
         Task<ResponseBase> GetCustomerIdAndNameAsync(CustomerDataRequest request);
 
         Task<ResponseBase> GetCustomerByIdAsync(CustomerViewRequest request);
+
+        Task<ResponseBase> DeleteCustomerAsync(CustomerDeleteRequest request);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using emec.contracts.managers;
 using emec.entities.Customer;
 using emec.entities.Customer.View;
+using emec.entities.Customer.Delete;
 using emec.shared.common;
 using emec.shared.Contracts;
 using emec.shared.Mappers;
@@ -41,20 +42,20 @@ namespace emec.api.Controllers.common
             {
                 if (request.Action.Equals(Constants.ApiActions.List))
                 {
-                    if (request.Args == null || request.Args.Length == 0)
+                    if(request.Args == null || request.Args.Length == 0)
                     {
                         var response = await _customerManager.GetCustomersAsync(request);
                         return response;
                     }
                     else
                     {
-                        if (request.Args[0].Equals("dropdowndata", StringComparison.OrdinalIgnoreCase))
+                        if (request.Args[0] == "dropdowndata" )
                         {
                             var response = await _customerManager.GetCustomerIdAndNameAsync(request);
                             return response;
                         }
                     }
-
+                    
                 }
                 return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
             }
@@ -73,6 +74,25 @@ namespace emec.api.Controllers.common
                 if (request.Action.Equals(Constants.ApiActions.View))
                 {
                     return await _customerManager.GetCustomerByIdAsync(request);
+                }
+
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
+            }
+        }
+
+        [HttpPost("delete")]
+        public async Task<ActionResult<ResponseBase>> DeleteCustomer([FromBody] CustomerDeleteRequest request)
+        {
+            try
+            {
+                if (request.Action.Equals(Constants.ApiActions.Delete))
+                {
+                    return await _customerManager.DeleteCustomerAsync(request);
                 }
 
                 return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());

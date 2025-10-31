@@ -11,5 +11,7 @@ namespace emec.contracts.repositories
         Task<IEnumerable<CustomerDataResponse>> GetCustomersAsync();
 
         Task<CustomerDataResponse?> GetCustomerByIdAsync(Guid customerId);
+
+        Task<bool> DeleteCustomerAsync(Guid customerId, int deletedBy);
     }
 }

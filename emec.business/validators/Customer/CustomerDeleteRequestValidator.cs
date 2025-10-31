@@ -1,20 +1,20 @@
-using emec.entities.Customer.View;
+using emec.entities.Customer.Delete;
 using emec.shared.Contracts;
 using emec.shared.models;
 using static emec.shared.common.Constants;
 
 namespace emec.business.validators.Customer
 {
-    public class CustomerViewRequestValidator : IValidator<CustomerViewRequest>
+    public class CustomerDeleteRequestValidator : IValidator<CustomerDeleteRequest>
     {
         private readonly IErrorMessages _errorMessages;
 
-        public CustomerViewRequestValidator(IErrorMessages errorMessages)
+        public CustomerDeleteRequestValidator(IErrorMessages errorMessages)
         {
             _errorMessages = errorMessages;
         }
 
-        public bool Validate(CustomerViewRequest request, out ResponseMessage message)
+        public bool Validate(CustomerDeleteRequest request, out ResponseMessage message)
         {
             message = null;
 
@@ -24,7 +24,7 @@ namespace emec.business.validators.Customer
                 return false;
             }
 
-            if (request.Action != ApiActions.View)
+            if (request.Action != ApiActions.Delete)
             {
                 message = _errorMessages.Common_ApiActionNotPermitted();
                 return false;

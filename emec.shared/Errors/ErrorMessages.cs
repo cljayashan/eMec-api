@@ -92,5 +92,19 @@ namespace emec.shared.Errors
             Code = "E0015",
             Message = ErrorResource.E0015
         };
+
+        public ResponseMessage Common_AttributesRequired() => new ResponseMessage
+        {
+            Code = "E0016",
+            Message = ErrorResource.E0016
+        };
+
+        public ResponseMessage Customer_IdRequired() => new ResponseMessage
+        {
+            Code = "E0017",
+            Message = ErrorResource.E0017
+        };
+
+
     }
 }
