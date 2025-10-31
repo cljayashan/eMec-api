@@ -9,5 +9,7 @@ namespace emec.contracts.repositories
         Task<IEnumerable<CustomerDataResponse>> GetCustomerIdAndNameAsync(string? name);
 
         Task<IEnumerable<CustomerDataResponse>> GetCustomersAsync();
+
+        Task<CustomerDataResponse?> GetCustomerByIdAsync(Guid customerId);
     }
 }

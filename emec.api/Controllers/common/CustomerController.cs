@@ -1,5 +1,6 @@
 ﻿using emec.contracts.managers;
 using emec.entities.Customer;
+using emec.entities.Customer.View;
 using emec.shared.common;
 using emec.shared.Contracts;
 using emec.shared.Mappers;
@@ -55,6 +56,25 @@ namespace emec.api.Controllers.common
                     }
 
                 }
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
+            }
+        }
+
+        [HttpPost("view")]
+        public async Task<ActionResult<ResponseBase>> GetCustomerById([FromBody] CustomerViewRequest request)
+        {
+            try
+            {
+                if (request.Action.Equals(Constants.ApiActions.View))
+                {
+                    return await _customerManager.GetCustomerByIdAsync(request);
+                }
+
                 return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
             }
             catch (Exception ex)

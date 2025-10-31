@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using emec.contracts.managers;
 using emec.contracts.repositories;
 using emec.entities.Customer;
+using emec.entities.Customer.View;
 using emec.shared.Contracts;
 using emec.shared.Mappers;
 using emec.shared.models;
@@ -16,6 +17,7 @@ namespace emec.business.managers
         private readonly IMapper<object, ResponseBase> _serviceResponseMapper;
         private readonly IMapper<ResponseMessage, ResponseBase> _serviceResponseErrorMapper;
         private readonly IValidator<CustomerDataRequest> _customerDataRequestValidator;
+        private readonly IValidator<CustomerViewRequest> _customerViewRequestValidator;
         private readonly ILogger<CustomerManager> _logger;
 
         public CustomerManager(
@@ -23,12 +25,14 @@ namespace emec.business.managers
             IMapper<object, ResponseBase> serviceResponseMapper,
             IMapper<ResponseMessage, ResponseBase> serviceResponseErrorMapper,
             IValidator<CustomerDataRequest> customerDataRequestValidator,
+            IValidator<CustomerViewRequest> customerViewRequestValidator,
              ILogger<CustomerManager> logger)
         {
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
             _serviceResponseMapper = serviceResponseMapper ?? throw new ArgumentNullException(nameof(serviceResponseMapper));
             _serviceResponseErrorMapper = serviceResponseErrorMapper ?? throw new ArgumentNullException(nameof(serviceResponseErrorMapper));
             _customerDataRequestValidator = customerDataRequestValidator ?? throw new ArgumentNullException(nameof(customerDataRequestValidator));
+            _customerViewRequestValidator = customerViewRequestValidator ?? throw new ArgumentNullException(nameof(customerViewRequestValidator));
             _logger = logger;
         }
 
@@ -47,7 +51,7 @@ namespace emec.business.managers
                 _logger.LogError(ex.ToString());
                 throw;
             }
-
+           
         }
 
         public async Task<ResponseBase> GetCustomerIdAndNameAsync(CustomerDataRequest request)
@@ -66,6 +70,29 @@ namespace emec.business.managers
                 throw;
             }
 
+        }
+
+        public async Task<ResponseBase> GetCustomerByIdAsync(CustomerViewRequest request)
+        {
+            try
+            {
+                if (!_customerViewRequestValidator.Validate(request, out ResponseMessage message))
+                    return _serviceResponseErrorMapper.Map(message);
+
+                var customer = await _customerRepository.GetCustomerByIdAsync(request.Attributes.CustomerId);
+                if (customer == null)
+                {
+                    var error = new ResponseMessage { Message = "Customer not found" };
+                    return _serviceResponseErrorMapper.Map(error);
+                }
+
+                return _serviceResponseMapper.Map(customer);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
         }
     }
 }

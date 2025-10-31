@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using emec.entities.Customer;
+using emec.entities.Customer.View;
 using emec.shared.models;
 
 namespace emec.contracts.managers
@@ -9,5 +10,7 @@ namespace emec.contracts.managers
         Task<ResponseBase> GetCustomersAsync(CustomerDataRequest request);
 
         Task<ResponseBase> GetCustomerIdAndNameAsync(CustomerDataRequest request);
+
+        Task<ResponseBase> GetCustomerByIdAsync(CustomerViewRequest request);
     }
 }

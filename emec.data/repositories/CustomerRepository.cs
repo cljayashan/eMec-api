@@ -65,5 +65,30 @@ namespace emec.data.repositories
             }
 
         }
+
+        public async Task<CustomerDataResponse?> GetCustomerByIdAsync(Guid customerId)
+        {
+            try
+            {
+                return await (from customer in _context.TblWsCustomers
+                              where customer.Id == customerId && customer.Deleted == false
+                              select new CustomerDataResponse
+                              {
+                                  Id = customer.Id,
+                                  FName = customer.Fname,
+                                  LName = customer.Lname,
+                                  Address = customer.Address,
+                                  NIC = customer.Nic,
+                                  Phone1 = customer.Phone1,
+                                  Phone2 = customer.Phone2,
+                                  Type = customer.Type
+                              }).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
     }
 }

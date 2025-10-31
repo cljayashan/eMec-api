@@ -11,10 +11,11 @@ using emec.data.mappers;
 using emec.data.repositories;
 using emec.dbcontext.tables.Models;
 using emec.entities.Customer;
+using emec.entities.Customer.View;
 using emec.entities.HealthCheck;
 using emec.entities.Login;
-using emec.entities.Vehicle.Register;
 using emec.entities.Vehicle.List;
+using emec.entities.Vehicle.Register;
 using emec.shared.Contracts;
 using emec.shared.Errors;
 using emec.shared.Mappers;
@@ -73,6 +74,7 @@ namespace emec.api
             services.AddScoped<IValidator<VehicleRegisterDataRequest>, VehicleRegisterRequestValidator>();
             services.AddScoped<IValidator<VehicleListDataRequest>, VehicleListDataRequestValidator>();
             services.AddScoped<IValidator<CustomerDataRequest>, SearchCustomerDataRequestValidator>();
+            services.AddScoped<IValidator<CustomerViewRequest>, CustomerViewRequestValidator>();
 
             //Mappers
             services.AddSingleton<IMapper<ResponseMessage, ResponseBase>, ServiceErrorMapper>();
