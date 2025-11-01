@@ -212,5 +212,32 @@ namespace emec.shared.Errors {
                 return ResourceManager.GetString("E0017", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First name is required.
+        /// </summary>
+        internal static string E0018 {
+            get {
+                return ResourceManager.GetString("E0018", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last name is required.
+        /// </summary>
+        internal static string E0019 {
+            get {
+                return ResourceManager.GetString("E0019", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone number is required.
+        /// </summary>
+        internal static string E0020 {
+            get {
+                return ResourceManager.GetString("E0020", resourceCulture);
+            }
+        }
     }
 }

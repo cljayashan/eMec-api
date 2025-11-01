@@ -46,5 +46,11 @@ namespace emec.shared.Contracts
 
         // Customer validation errors
         ResponseMessage Customer_IdRequired();
+
+        ResponseMessage Customer_FNameRequired();
+
+        ResponseMessage Customer_LNameRequired();
+
+        ResponseMessage Customer_Phone1Required();
     }
 }

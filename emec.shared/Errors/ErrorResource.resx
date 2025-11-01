@@ -168,4 +168,13 @@
   <data name="E0017" xml:space="preserve">
     <value>Customer ID is required</value>
   </data>
+  <data name="E0018" xml:space="preserve">
+    <value>First name is required</value>
+  </data>
+  <data name="E0019" xml:space="preserve">
+    <value>Last name is required</value>
+  </data>
+  <data name="E0020" xml:space="preserve">
+    <value>Phone number is required</value>
+  </data>
 </root>

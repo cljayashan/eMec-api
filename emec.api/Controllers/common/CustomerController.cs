@@ -1,7 +1,8 @@
 ﻿using emec.contracts.managers;
 using emec.entities.Customer;
-using emec.entities.Customer.View;
 using emec.entities.Customer.Delete;
+using emec.entities.Customer.Update;
+using emec.entities.Customer.View;
 using emec.shared.common;
 using emec.shared.Contracts;
 using emec.shared.Mappers;
@@ -57,7 +58,7 @@ namespace emec.api.Controllers.common
                     }
                     
                 }
-                return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted());
             }
             catch (Exception ex)
             {
@@ -76,7 +77,7 @@ namespace emec.api.Controllers.common
                     return await _customerManager.GetCustomerByIdAsync(request);
                 }
 
-                return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted());
             }
             catch (Exception ex)
             {
@@ -95,7 +96,26 @@ namespace emec.api.Controllers.common
                     return await _customerManager.DeleteCustomerAsync(request);
                 }
 
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
                 return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
+            }
+        }
+
+        [HttpPost("update")]
+        public async Task<ActionResult<ResponseBase>> UpdateCustomer([FromBody] CustomerUpdateRequest request)
+        {
+            try
+            {
+                if (request.Action.Equals(Constants.ApiActions.Edit))
+                {
+                    return await _customerManager.UpdateCustomerAsync(request);
+                }
+
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted());
             }
             catch (Exception ex)
             {

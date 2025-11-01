@@ -13,6 +13,7 @@ using emec.dbcontext.tables.Models;
 using emec.entities.Customer;
 using emec.entities.Customer.View;
 using emec.entities.Customer.Delete;
+using emec.entities.Customer.Update;
 using emec.entities.HealthCheck;
 using emec.entities.Login;
 using emec.entities.Vehicle.Register;
@@ -77,6 +78,7 @@ namespace emec.api
             services.AddScoped<IValidator<CustomerDataRequest>, SearchCustomerDataRequestValidator>();
             services.AddScoped<IValidator<CustomerViewRequest>, CustomerViewRequestValidator>();
             services.AddScoped<IValidator<CustomerDeleteRequest>, CustomerDeleteRequestValidator>();
+            services.AddScoped<IValidator<CustomerUpdateRequest>, CustomerUpdateRequestValidator>();
 
             //Mappers
             services.AddSingleton<IMapper<ResponseMessage, ResponseBase>, ServiceErrorMapper>();

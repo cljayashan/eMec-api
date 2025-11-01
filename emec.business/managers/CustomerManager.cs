@@ -1,8 +1,11 @@
+using System;
+using System.Threading.Tasks;
 using emec.contracts.managers;
 using emec.contracts.repositories;
 using emec.entities.Customer;
-using emec.entities.Customer.Delete;
 using emec.entities.Customer.View;
+using emec.entities.Customer.Delete;
+using emec.entities.Customer.Update;
 using emec.shared.Contracts;
 using emec.shared.Mappers;
 using emec.shared.models;
@@ -18,6 +21,7 @@ namespace emec.business.managers
         private readonly IValidator<CustomerDataRequest> _customerDataRequestValidator;
         private readonly IValidator<CustomerViewRequest> _customerViewRequestValidator;
         private readonly IValidator<CustomerDeleteRequest> _customerDeleteRequestValidator;
+        private readonly IValidator<CustomerUpdateRequest> _customerUpdateRequestValidator;
         private readonly ILogger<CustomerManager> _logger;
 
         public CustomerManager(
@@ -27,6 +31,7 @@ namespace emec.business.managers
             IValidator<CustomerDataRequest> customerDataRequestValidator,
             IValidator<CustomerViewRequest> customerViewRequestValidator,
             IValidator<CustomerDeleteRequest> customerDeleteRequestValidator,
+            IValidator<CustomerUpdateRequest> customerUpdateRequestValidator,
              ILogger<CustomerManager> logger)
         {
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
@@ -35,6 +40,7 @@ namespace emec.business.managers
             _customerDataRequestValidator = customerDataRequestValidator ?? throw new ArgumentNullException(nameof(customerDataRequestValidator));
             _customerViewRequestValidator = customerViewRequestValidator ?? throw new ArgumentNullException(nameof(customerViewRequestValidator));
             _customerDeleteRequestValidator = customerDeleteRequestValidator ?? throw new ArgumentNullException(nameof(customerDeleteRequestValidator));
+            _customerUpdateRequestValidator = customerUpdateRequestValidator ?? throw new ArgumentNullException(nameof(customerUpdateRequestValidator));
             _logger = logger;
         }
 
@@ -53,7 +59,7 @@ namespace emec.business.managers
                 _logger.LogError(ex.ToString());
                 throw;
             }
-           
+
         }
 
         public async Task<ResponseBase> GetCustomerIdAndNameAsync(CustomerDataRequest request)
@@ -105,7 +111,7 @@ namespace emec.business.managers
                     return _serviceResponseErrorMapper.Map(message);
 
                 var result = await _customerRepository.DeleteCustomerAsync(request.Attributes.CustomerId, 1); //TODO: get deletedBy from logged in user
-                
+
                 if (!result)
                 {
                     var error = new ResponseMessage { Message = "Customer not found or already deleted" };
@@ -114,6 +120,41 @@ namespace emec.business.managers
 
                 var successResponse = new { Success = true, Message = "Customer deleted successfully" };
                 return _serviceResponseMapper.Map(successResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        public async Task<ResponseBase> UpdateCustomerAsync(CustomerUpdateRequest request)
+        {
+            try
+            {
+                if (!_customerUpdateRequestValidator.Validate(request, out ResponseMessage message))
+                    return _serviceResponseErrorMapper.Map(message);
+
+                var attr = request.Attributes;
+                var customer = await _customerRepository.UpdateCustomerAsync(
+                    attr.Id,
+                    attr.FName,
+                    attr.LName,
+                    attr.Address,
+                    attr.NIC,
+                    attr.Phone1,
+                    attr.Phone2,
+                    attr.Type,
+                    1 //TODO: get updatedBy from logged in user
+                );
+
+                if (customer == null)
+                {
+                    var error = new ResponseMessage { Message = "Customer not found or already deleted" };
+                    return _serviceResponseErrorMapper.Map(error);
+                }
+
+                return _serviceResponseMapper.Map(customer);
             }
             catch (Exception ex)
             {
