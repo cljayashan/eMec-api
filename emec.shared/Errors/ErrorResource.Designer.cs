@@ -194,5 +194,50 @@ namespace emec.shared.Errors {
                 return ResourceManager.GetString("E0015", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request attributes are required.
+        /// </summary>
+        internal static string E0016 {
+            get {
+                return ResourceManager.GetString("E0016", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer ID is required.
+        /// </summary>
+        internal static string E0017 {
+            get {
+                return ResourceManager.GetString("E0017", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First name is required.
+        /// </summary>
+        internal static string E0018 {
+            get {
+                return ResourceManager.GetString("E0018", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last name is required.
+        /// </summary>
+        internal static string E0019 {
+            get {
+                return ResourceManager.GetString("E0019", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone number is required.
+        /// </summary>
+        internal static string E0020 {
+            get {
+                return ResourceManager.GetString("E0020", resourceCulture);
+            }
+        }
     }
 }

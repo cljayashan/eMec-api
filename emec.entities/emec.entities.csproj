@@ -10,4 +10,8 @@
     <ProjectReference Include="..\emec.shared\emec.shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Customer\List\" />
+  </ItemGroup>
+
 </Project>

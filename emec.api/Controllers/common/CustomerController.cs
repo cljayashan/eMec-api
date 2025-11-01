@@ -1,5 +1,8 @@
 ﻿using emec.contracts.managers;
 using emec.entities.Customer;
+using emec.entities.Customer.Delete;
+using emec.entities.Customer.Update;
+using emec.entities.Customer.View;
 using emec.shared.common;
 using emec.shared.Contracts;
 using emec.shared.Mappers;
@@ -40,22 +43,79 @@ namespace emec.api.Controllers.common
             {
                 if (request.Action.Equals(Constants.ApiActions.List))
                 {
-                    if (request.Args == null || request.Args.Length == 0)
+                    if(request.Args == null || request.Args.Length == 0)
                     {
                         var response = await _customerManager.GetCustomersAsync(request);
                         return response;
                     }
                     else
                     {
-                        if (request.Args[0].Equals("dropdowndata", StringComparison.OrdinalIgnoreCase))
+                        if (request.Args[0] == "dropdowndata" )
                         {
                             var response = await _customerManager.GetCustomerIdAndNameAsync(request);
                             return response;
                         }
                     }
-
+                    
                 }
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
                 return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
+            }
+        }
+
+        [HttpPost("view")]
+        public async Task<ActionResult<ResponseBase>> GetCustomerById([FromBody] CustomerViewRequest request)
+        {
+            try
+            {
+                if (request.Action.Equals(Constants.ApiActions.View))
+                {
+                    return await _customerManager.GetCustomerByIdAsync(request);
+                }
+
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
+            }
+        }
+
+        [HttpPost("delete")]
+        public async Task<ActionResult<ResponseBase>> DeleteCustomer([FromBody] CustomerDeleteRequest request)
+        {
+            try
+            {
+                if (request.Action.Equals(Constants.ApiActions.Delete))
+                {
+                    return await _customerManager.DeleteCustomerAsync(request);
+                }
+
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_InvalidRequest());
+            }
+        }
+
+        [HttpPost("update")]
+        public async Task<ActionResult<ResponseBase>> UpdateCustomer([FromBody] CustomerUpdateRequest request)
+        {
+            try
+            {
+                if (request.Action.Equals(Constants.ApiActions.Edit))
+                {
+                    return await _customerManager.UpdateCustomerAsync(request);
+                }
+
+                return _serviceResponseErrorMapper.Map(_errormessages.Common_ApiActionNotPermitted());
             }
             catch (Exception ex)
             {

@@ -17,6 +17,10 @@ namespace emec.shared.Contracts
 
         ResponseMessage Common_InvalidOrExpiredRefreshToken();
 
+        ResponseMessage Common_AttributesRequired();
+
+        ResponseMessage Common_SearchKeywordIsRequired();
+
         // Vehicle validation errors
         ResponseMessage Vehicle_Null();
 
@@ -40,6 +44,13 @@ namespace emec.shared.Contracts
 
         ResponseMessage Vehicle_NumberMustHave4Digits();
 
-        ResponseMessage Common_SearchKeywordIsRequired();
+        // Customer validation errors
+        ResponseMessage Customer_IdRequired();
+
+        ResponseMessage Customer_FNameRequired();
+
+        ResponseMessage Customer_LNameRequired();
+
+        ResponseMessage Customer_Phone1Required();
     }
 }

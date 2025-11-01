@@ -17,11 +17,11 @@ namespace emec.business.validators.Customer
 
         public bool Validate(CustomerDataRequest request, out ResponseMessage message)
         {
-            message = new ResponseMessage();
+            message = null;
 
             if (request == null || string.IsNullOrWhiteSpace(request.Action))
             {
-                message.Message = "Invalid request.";
+                message = _errorMessages.Common_InvalidRequest();
                 return false;
             }
 
